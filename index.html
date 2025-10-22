@@ -1,0 +1,497 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fashionhabits — Streetwear & Chic</title>
+  <meta name="description" content="Fashionhabits : boutique streetwear & chic. Vêtements et chaussures unisexes. Qualité, style moderne, livraisons en France & Europe.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0a0a0b;
+      --panel:#121214;
+      --text:#f3f4f6;
+      --muted:#a3a3a3;
+      --accent-start:#7c3aed; /* violet */
+      --accent-end:#22d3ee;   /* cyan */
+      --success:#10b981;
+      --danger:#ef4444;
+      --shadow:0 10px 30px rgba(0,0,0,.3);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji";line-height:1.5}
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+
+    /* Header */
+    .header{position:sticky;top:0;z-index:50;background:rgba(10,10,11,.6);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--accent-start),var(--accent-end));box-shadow:var(--shadow)}
+    .brand h1{font-size:1.25rem;margin:0;font-weight:800;letter-spacing:.5px}
+    .menu a{margin:0 12px;color:var(--muted)}
+    .menu a.active,.menu a:hover{color:var(--text)}
+    .cart-btn{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent-start),var(--accent-end));border:none;color:white;padding:10px 14px;border-radius:14px;cursor:pointer;font-weight:700;box-shadow:var(--shadow)}
+
+    /* Hero */
+    .hero{position:relative;overflow:hidden}
+    .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;padding:64px 0}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.06);color:var(--muted);border:1px solid rgba(255,255,255,.08)}
+    .title{font-size:clamp(32px,6vw,56px);line-height:1.05;margin:14px 0;font-weight:800}
+    .subtitle{color:var(--muted);max-width:60ch}
+    .cta{margin-top:20px;display:flex;gap:12px}
+    .btn{display:inline-block;padding:12px 18px;border-radius:14px;font-weight:700;border:1px solid rgba(255,255,255,.12)}
+    .btn-primary{background:linear-gradient(135deg,var(--accent-start),var(--accent-end));border:none;color:white;box-shadow:var(--shadow)}
+    .btn-ghost{color:var(--text)}
+    .hero-card{border-radius:var(--radius);overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow)}
+    .hero-card img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/5;filter:contrast(1.05)}
+
+    /* Section */
+    section{padding:56px 0;border-top:1px solid rgba(255,255,255,.06)}
+    h2.section-title{font-size:clamp(24px,4vw,36px);margin:0 0 18px 0}
+    p.section-sub{color:var(--muted);margin:0 0 24px 0}
+
+    /* Products grid */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+    .card img{aspect-ratio:4/5;object-fit:cover}
+    .card-body{padding:14px}
+    .meta{display:flex;justify-content:space-between;align-items:center;margin-top:6px;color:var(--muted)}
+    .price{font-weight:800}
+    .variant{margin:10px 0;display:flex;gap:8px;flex-wrap:wrap}
+    .pill{padding:6px 10px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);cursor:pointer;font-size:.9rem}
+    .pill.active{background:linear-gradient(135deg,var(--accent-start),var(--accent-end));color:white;border:none}
+    .add-btn{margin-top:auto;display:block;width:100%;text-align:center;padding:12px;border:none;border-top:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:white;font-weight:700;cursor:pointer}
+    .add-btn:hover{background:rgba(255,255,255,.08)}
+
+    /* Cart drawer */
+    .drawer{position:fixed;inset:0 0 0 auto;width:min(420px,100%);background:var(--panel);transform:translateX(110%);transition:transform .35s ease;box-shadow:var(--shadow);border-left:1px solid rgba(255,255,255,.08);z-index:100}
+    .drawer.open{transform:none}
+    .drawer header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .drawer .items{max-height:60vh;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:12px 16px}
+    .item{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:8px}
+    .qty{display:flex;align-items:center;gap:8px}
+    .qty button{width:28px;height:28px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:white;cursor:pointer}
+    .drawer footer{padding:16px;border-top:1px solid rgba(255,255,255,.08)}
+    .summary{display:flex;justify-content:space-between;margin-bottom:12px}
+    .checkout{width:100%;padding:12px 16px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--accent-start),var(--accent-end));color:white;font-weight:800;cursor:pointer}
+    .note{color:var(--muted);font-size:.9rem;margin-top:8px}
+    .error{color:var(--danger);margin-top:8px}
+    .success{color:var(--success);margin-top:8px}
+
+    /* Info blocks */
+    .usp{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
+    .usp .block{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:16px;border-radius:16px}
+    .muted{color:var(--muted)}
+
+    /* Footer */
+    footer{padding:30px 0;color:var(--muted)}
+    .links{display:flex;gap:16px;flex-wrap:wrap}
+    .links a{color:var(--muted)}
+    .legal{opacity:.7;font-size:.9rem;margin-top:8px}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero .wrap{grid-template-columns:1fr;gap:20px}
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .usp{grid-template-columns:1fr}
+    }
+    @media (max-width: 640px){
+      .menu{display:none}
+      .grid{grid-template-columns:1fr}
+    }
+    /* Reveal animations */
+    .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
+    .reveal.show{opacity:1;transform:none}
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>Fashionhabits</h1>
+      </div>
+      <nav class="menu">
+        <a href="#home" class="active">Accueil</a>
+        <a href="#shop">Boutique</a>
+        <a href="#about">À propos</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="cart-btn" id="openCart" aria-label="Ouvrir le panier">🛒 <span id="cartCount">0</span></button>
+    </div>
+  </header>
+
+  <main id="home" class="hero">
+    <div class="container wrap">
+      <div>
+        <span class="badge">Nouveauté • Streetwear & Chic</span>
+        <h2 class="title">Affirme ton style.<br/>Épure, moderne, avec du caractère.</h2>
+        <p class="subtitle">Sélection unisexe de pièces essentielles : coupes nettes, matières confort, détails premium. Livraison rapide en France & Europe.</p>
+        <div class="cta">
+          <a href="#shop" class="btn btn-primary">Voir la boutique</a>
+          <a href="#about" class="btn btn-ghost">En savoir plus</a>
+        </div>
+        <div class="usp">
+          <div class="block reveal"><strong>Livraison 48–72h</strong><div class="muted">France Métropolitaine</div></div>
+          <div class="block reveal"><strong>Retours 14 jours</strong><div class="muted">Échange ou remboursement</div></div>
+          <div class="block reveal"><strong>Paiement sécurisé</strong><div class="muted">Stripe • PayPal</div></div>
+        </div>
+      </div>
+      <div class="hero-card reveal">
+        <img alt="Look streetwear & chic" src="https://images.unsplash.com/photo-1520975858867-3253d77643af?q=80&w=1200&auto=format&fit=crop" />
+      </div>
+    </div>
+  </main>
+
+  <section id="shop">
+    <div class="container">
+      <h2 class="section-title">Boutique</h2>
+      <p class="section-sub">6 articles pour commencer — tu pourras en ajouter d'autres facilement.</p>
+      <div class="grid" id="productGrid"></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <h2 class="section-title">À propos de Fashionhabits</h2>
+      <p class="section-sub">Une marque indépendante née d'une idée simple : des pièces faciles à porter, au croisement du street et du chic. Nous sourçons avec soin, contrôlons la qualité, et expédions rapidement depuis nos stocks.</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <h2 class="section-title">Contact</h2>
+      <p class="section-sub">Une question sur une taille, un retour, ou une commande ? Écris‑nous à <a href="mailto:hello@fashionhabits.fr">hello@fashionhabits.fr</a>.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="#legal-mentions">Mentions légales</a> •
+        <a href="#legal-privacy">Confidentialité</a> •
+        <a href="#legal-returns">Retours & Remboursements</a>
+      </div>
+      <div class="legal">© <span id="year"></span> Fashionhabits. Tous droits réservés.</div>
+    </div>
+  </footer>
+
+  <!-- Cart Drawer -->
+  <aside class="drawer" id="drawer">
+    <header>
+      <strong>Panier</strong>
+      <button id="closeCart" aria-label="Fermer">✕</button>
+    </header>
+    <div class="items" id="cartItems"></div>
+    <footer>
+      <div class="summary"><span>Total</span><strong id="cartTotal">0,00 €</strong></div>
+      <button class="checkout" id="checkoutBtn">Payer maintenant</button>
+      <div class="note">Le paiement est sécurisé via Stripe. Les cartes bancaires principales sont acceptées.</div>
+      <div class="error" id="error"></div>
+      <div class="success" id="success"></div>
+    </footer>
+  </aside>
+
+  <script>
+    const PRODUCTS = [
+  {
+    "id": "tee-minimal-white",
+    "title": "T-shirt Minimal Blanc",
+    "price": 29.9,
+    "category": "Vêtements",
+    "gender": "Unisexe",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "image": "https://images.unsplash.com/photo-1520975922284-5f5730d0f9b5?q=80&w=1200&auto=format&fit=crop",
+    "priceId": "price_xxx_TSHIRT_WHITE"
+  },
+  {
+    "id": "hoodie-black-street",
+    "title": "Hoodie Noir Street",
+    "price": 54.9,
+    "category": "Vêtements",
+    "gender": "Unisexe",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "image": "https://images.unsplash.com/photo-1520975867597-0f4a5f1f9f9e?q=80&w=1200&auto=format&fit=crop",
+    "priceId": "price_xxx_HOODIE_BLACK"
+  },
+  {
+    "id": "cargo-olive",
+    "title": "Pantalon Cargo Olive",
+    "price": 49.9,
+    "category": "Vêtements",
+    "gender": "Homme",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "image": "https://images.unsplash.com/photo-1516826957135-700dedea698c?q=80&w=1200&auto=format&fit=crop",
+    "priceId": "price_xxx_CARGO_OLIVE"
+  },
+  {
+    "id": "dress-satin-black",
+    "title": "Robe Satin Noire",
+    "price": 59.9,
+    "category": "Vêtements",
+    "gender": "Femme",
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L"
+    ],
+    "image": "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop",
+    "priceId": "price_xxx_DRESS_BLACK"
+  },
+  {
+    "id": "sneakers-white-minimal",
+    "title": "Sneakers Blanches Minimal",
+    "price": 69.9,
+    "category": "Chaussures",
+    "gender": "Unisexe",
+    "sizes": [
+      "36",
+      "37",
+      "38",
+      "39",
+      "40",
+      "41",
+      "42",
+      "43",
+      "44"
+    ],
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop",
+    "priceId": "price_xxx_SNEAKERS_WHITE"
+  },
+  {
+    "id": "sneakers-chunky-black",
+    "title": "Sneakers Chunky Noires",
+    "price": 79.9,
+    "category": "Chaussures",
+    "gender": "Unisexe",
+    "sizes": [
+      "36",
+      "37",
+      "38",
+      "39",
+      "40",
+      "41",
+      "42",
+      "43",
+      "44"
+    ],
+    "image": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=1200&auto=format&fit=crop",
+    "priceId": "price_xxx_SNEAKERS_CHUNKY"
+  }
+];
+
+    // --- Utilities
+    const formatPrice = (n) => new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR' }).format(n);
+    const el = (html) => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
+
+    // --- Render products
+    const grid = document.getElementById('productGrid');
+    PRODUCTS.forEach(p => {
+      const sizes = p.sizes.map(s => `<button class="pill" data-size="${s}">${s}</button>`).join('');
+      const card = el(`
+        <article class="card reveal">
+          <img src="${p.image}" alt="${p.title}">
+          <div class="card-body">
+            <h3 style="margin:0;font-size:1.05rem">${p.title}</h3>
+            <div class="meta">
+              <span class="muted">${p.category} • ${p.gender}</span>
+              <span class="price">${formatPrice(p.price)}</span>
+            </div>
+            <div class="variant" data-id="${p.id}">
+              ${sizes}
+            </div>
+            <button class="add-btn" data-id="${p.id}">Ajouter au panier</button>
+          </div>
+        </article>
+      `);
+      grid.appendChild(card);
+    });
+
+    // --- Size selection
+    document.querySelectorAll('.variant').forEach(v => {
+      v.addEventListener('click', (e) => {
+        if(e.target.classList.contains('pill')) {
+          v.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+          e.target.classList.add('active');
+        }
+      });
+    });
+
+    // --- Cart state
+    const CART_KEY = 'fh_cart_v1';
+    const loadCart = () => JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+    const saveCart = (c) => localStorage.setItem(CART_KEY, JSON.stringify(c));
+    const cartCount = document.getElementById('cartCount');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    const drawer = document.getElementById('drawer');
+
+    const updateBadge = () => {
+      const cart = loadCart();
+      cartCount.textContent = cart.reduce((a,i) => a + i.qty, 0);
+    };
+
+    const renderCart = () => {
+      const cart = loadCart();
+      cartItems.innerHTML = '';
+      let total = 0;
+      cart.forEach(item => {
+        const p = PRODUCTS.find(x => x.id === item.id);
+        if(!p) return;
+        const line = p.price * item.qty;
+        total += line;
+        const node = el(`
+          <div class="item">
+            <img src="${p.image}" alt="${p.title}">
+            <div>
+              <div><strong>${p.title}</strong></div>
+              <div class="muted">Taille ${item.size}</div>
+              <div class="muted">${formatPrice(p.price)} × ${item.qty}</div>
+            </div>
+            <div class="qty">
+              <button data-action="dec" data-id="${item.id}" data-size="${item.size}">−</button>
+              <span>${item.qty}</span>
+              <button data-action="inc" data-id="${item.id}" data-size="${item.size}">+</button>
+            </div>
+          </div>
+        `);
+        cartItems.appendChild(node);
+      });
+      cartTotal.textContent = formatPrice(total);
+      updateBadge();
+    };
+
+    // --- Add to cart
+    document.querySelectorAll('.add-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        const variant = document.querySelector(\`.variant[data-id="\${id}"]\`);
+        const active = variant.querySelector('.pill.active');
+        if(!active) { alert('Choisis une taille avant d’ajouter au panier.'); return; }
+        const size = active.dataset.size;
+        const cart = loadCart();
+        const existing = cart.find(i => i.id === id && i.size === size);
+        if(existing) existing.qty += 1;
+        else cart.push({ id, size, qty: 1 });
+        saveCart(cart);
+        renderCart();
+        openDrawer();
+      });
+    });
+
+    // --- Qty buttons
+    cartItems.addEventListener('click', (e) => {
+      if(e.target.tagName !== 'BUTTON') return;
+      const id = e.target.dataset.id;
+      const size = e.target.dataset.size;
+      const action = e.target.dataset.action;
+      const cart = loadCart();
+      const idx = cart.findIndex(i => i.id === id && i.size === size);
+      if(idx === -1) return;
+      if(action === 'inc') cart[idx].qty += 1;
+      if(action === 'dec') { cart[idx].qty -= 1; if(cart[idx].qty <= 0) cart.splice(idx,1); }
+      saveCart(cart);
+      renderCart();
+    });
+
+    // --- Drawer open/close
+    const openCart = document.getElementById('openCart');
+    const closeCart = document.getElementById('closeCart');
+    const openDrawer = () => drawer.classList.add('open');
+    const closeDrawer = () => drawer.classList.remove('open');
+    openCart.addEventListener('click', () => { renderCart(); openDrawer(); });
+    closeCart.addEventListener('click', closeDrawer);
+    updateBadge();
+
+    // --- Checkout via Netlify Function (Stripe Checkout)
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const errorEl = document.getElementById('error');
+    const successEl = document.getElementById('success');
+
+    checkoutBtn.addEventListener('click', async () => {
+      errorEl.textContent = '';
+      successEl.textContent = '';
+      const cart = loadCart();
+      if(cart.length === 0) { errorEl.textContent = 'Ton panier est vide.'; return; }
+
+      // Build Stripe line_items from cart using priceId placeholders
+      const line_items = cart.map(item => {
+        const p = PRODUCTS.find(x => x.id === item.id);
+        return { price: p.priceId, quantity: item.qty };
+      });
+
+      try {
+        const res = await fetch('/.netlify/functions/create-checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ line_items })
+        });
+        if(!res.ok) throw new Error('Erreur réseau');
+        const data = await res.json();
+        if(data.url) {
+          // Redirect to Stripe Checkout
+          window.location.href = data.url;
+        } else if(data.error) {
+          errorEl.textContent = data.error;
+        } else {
+          errorEl.textContent = 'Réponse inattendue du serveur.';
+        }
+      } catch (err) {
+        errorEl.textContent = 'Paiement non configuré. Suis le README pour activer Stripe.';
+      }
+    });
+
+    // --- Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => e.isIntersecting && e.target.classList.add('show'));
+    }, { threshold: .16 });
+    document.querySelectorAll('.reveal').forEach(n => io.observe(n));
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+  <!-- ==== PAGES LÉGALES (ancrées) ==== -->
+  <section id="legal-mentions">
+    <div class="container">
+      <h2 class="section-title">Mentions légales</h2>
+      <p class="section-sub">Éditeur : Fashionhabits — Email : hello@fashionhabits.fr — Siège : À compléter. Numéro SIREN/SIRET : À compléter.</p>
+    </div>
+  </section>
+  <section id="legal-privacy">
+    <div class="container">
+      <h2 class="section-title">Politique de confidentialité</h2>
+      <p class="section-sub">Nous collectons uniquement les données nécessaires au traitement des commandes (nom, adresse, email). Vos données ne sont jamais revendues. Vous pouvez demander leur suppression à tout moment.</p>
+    </div>
+  </section>
+  <section id="legal-returns">
+    <div class="container">
+      <h2 class="section-title">Retours & Remboursements</h2>
+      <p class="section-sub">Vous disposez de 14 jours après réception pour retourner un article non porté avec étiquettes. Remboursement sous 7 jours après réception et contrôle.</p>
+    </div>
+  </section>
+</body>
+</html>
