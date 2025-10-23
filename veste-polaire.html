@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Veste Polaire — Fashionhabits</title>
+  <meta name="description" content="Veste Polaire — chaude, unisexe et moderne. Galerie photos, tailles, avis vérifiés.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0a0a0b;--panel:#121214;--text:#f3f4f6;--muted:#a3a3a3;--accent-start:#7c3aed;--accent-end:#22d3ee;--radius:18px;--border:1px solid rgba(255,255,255,.08)}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+    header{position:sticky;top:0;z-index:50;background:rgba(10,10,11,.6);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--accent-start),var(--accent-end))}
+    h1{font-size:1.1rem;margin:0;font-weight:800}
+    main{padding:28px 0}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:26px}
+    .panel{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:var(--border);border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .gallery{padding:16px}
+    .big{aspect-ratio:4/5;background:#0d0e10;border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .big img{max-width:100%;max-height:100%;object-fit:contain}
+    .thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
+    .thumbs img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:10px;border:2px solid transparent;cursor:pointer}
+    .thumbs img.active{border-color:var(--accent-end)}
+    .details{padding:18px}
+    .title{font-size:1.6rem;font-weight:800;margin:0}
+    .price{font-size:1.35rem;font-weight:800;margin-top:6px}
+    .meta{color:var(--muted)}
+    .desc{color:var(--muted);margin-top:10px}
+    .sizes{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+    .pill{padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);cursor:pointer}
+    .pill.active{background:linear-gradient(135deg,var(--accent-start),var(--accent-end));color:#fff;border:none}
+    .cta{display:flex;gap:10px;margin-top:10px}
+    .btn{padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-weight:700;cursor:pointer}
+    .btn.primary{background:linear-gradient(135deg,var(--accent-start),var(--accent-end));border:none}
+    .rating{display:flex;align-items:center;gap:8px;margin-top:8px}
+    .stars{color:#facc15}
+    .reviews{margin-top:18px;padding:18px}
+    .review{border-bottom:1px dashed rgba(255,255,255,.1);padding:10px 0}
+    .review:last-child{border-bottom:none}
+    .review .head{display:flex;justify-content:space-between;align-items:center}
+    .review .txt{color:var(--muted);margin-top:6px}
+    .show{text-align:center;margin-top:12px}
+    .show button{background:transparent;border:1px solid rgba(255,255,255,.1);color:#fff;padding:10px 16px;border-radius:10px;cursor:pointer}
+    footer{padding:30px 0;color:var(--muted);text-align:center}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand"><a href="index.html" class="logo" aria-label="Retour accueil"></a><h1>Fashionhabits</h1></div>
+      <nav><a href="index.html">Boutique</a></nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="grid">
+      <!-- Galerie -->
+      <section class="panel gallery">
+        <div class="big"><img id="big" alt="Veste Polaire"></div>
+        <div class="thumbs" id="thumbs"></div>
+      </section>
+
+      <!-- Détails -->
+      <section class="panel details">
+        <h2 class="title">Veste Polaire</h2>
+        <div class="meta">Vêtements • Unisexe</div>
+        <div class="price">39,99 €</div>
+
+        <div class="rating">
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+          <div><b>4.9</b> / 5 — <span class="meta">50 avis vérifiés</span></div>
+        </div>
+
+        <p class="desc">
+          Reste au chaud avec cette veste à col montant doublée polaire, parfaite pour l’automne et l’hiver.
+          Design bicolore moderne, poches pratiques, fermeture éclair solide. Confort optimal au quotidien.
+        </p>
+
+        <div style="margin-top:6px;font-weight:700">Tailles</div>
+        <div class="sizes" id="sizes">
+          <button class="pill">XS</button><button class="pill">S</button>
+          <button class="pill">M</button><button class="pill">L</button><button class="pill">XL</button>
+        </div>
+
+        <div class="cta">
+          <button class="btn primary" id="addCart">Ajouter au panier</button>
+          <button class="btn" id="buyNow">Acheter maintenant</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Avis -->
+    <section class="panel reviews" style="margin-top:20px">
+      <h3 style="margin:0 0 6px 0">Avis clients</h3>
+      <div id="reviews"></div>
+      <div class="show"><button id="showMore">Voir plus d’avis</button></div>
+    </section>
+  </main>
+
+  <footer>© <span id="year"></span> Fashionhabits — Livraison France & Europe</footer>
+
+  <script>
+    /* ----------- Galerie ----------- */
+    const IMAGES = [
+      'assets/veste-polaire-1.png',
+      'assets/veste-polaire-2.png',
+      'assets/veste-polaire-3.png',
+      'assets/veste-polaire-4.png',
+      'assets/veste-polaire-5.png'
+    ];
+    const big=document.getElementById('big');
+    const thumbs=document.getElementById('thumbs');
+    big.src = IMAGES[0];
+    IMAGES.forEach((src,i)=>{
+      const img=new Image(); img.src=src; img.alt='Veste Polaire '+(i+1);
+      if(i===0) img.classList.add('active');
+      img.onclick=()=>{ big.src=src; document.querySelectorAll('#thumbs img').forEach(t=>t.classList.remove('active')); img.classList.add('active'); };
+      thumbs.appendChild(img);
+    });
+
+    /* ----------- Tailles & panier partagé ----------- */
+    const CART_KEY='fh_cart_v1';
+    const sizes=document.getElementById('sizes');
+    let selSize=null;
+    sizes.addEventListener('click',(e)=>{
+      const b=e.target.closest('.pill'); if(!b) return;
+      sizes.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active'); selSize=b.textContent;
+    });
+    const loadCart=()=>JSON.parse(localStorage.getItem(CART_KEY)||'[]');
+    const saveCart=(c)=>localStorage.setItem(CART_KEY,JSON.stringify(c));
+    function addToCart(){ if(!selSize){ alert('Choisis une taille.'); return;}
+      const cart=loadCart(); const id='veste-polaire'; const ex=cart.find(i=>i.id===id&&i.size===selSize);
+      if(ex) ex.qty++; else cart.push({id,size:selSize,qty:1});
+      saveCart(cart); alert('Ajouté au panier ('+selSize+')');
+    }
+    document.getElementById('addCart').onclick=addToCart;
+    document.getElementById('buyNow').onclick=()=>{ addToCart(); window.location.href='index.html#shop'; };
+
+    /* ----------- Avis (50 vérifiés + étoiles + voir plus) ----------- */
+    const REVIEWS = [
+      { n:"Léo M.",r:5.0,t:"Veste hyper confortable, tient bien chaud. Coupe nickel !",d:"12/10/2025" },
+      { n:"Manon R.",r:4.9,t:"Qualité au top pour le prix. Reçue en 3 jours.",d:"10/10/2025" },
+      { n:"Lucas V.",r:5.0,t:"Matière douce, zips solides. Recommande à 100%.",d:"08/10/2025" },
+      { n:"Emma P.",r:4.8,t:"Très agréable à porter, couleurs fidèles aux photos.",d:"07/10/2025" },
+      { n:"Sofia T.",r:4.9,t:"Chaud mais léger, parfait pour l’automne. Taille S OK.",d:"05/10/2025" },
+      { n:"Hugo B.",r:5.0,t:"Finition propre, coupe moderne. Top !",d:"03/10/2025" },
+      { n:"Camille L.",r:4.9,t:"Prise en M, tombe super bien. SAV réactif.",d:"01/10/2025" },
+      { n:"Noah S.",r:4.9,t:"Excellent rapport qualité/prix.",d:"29/09/2025" },
+      { n:"Clara D.",r:5.0,t:"J’adore ! Douce et cosy, parfaite pour la fac.",d:"27/09/2025" },
+      { n:"Jules A.",r:4.8,t:"Coupe un peu loose, bonne chaleur.",d:"26/09/2025" },
+      { n:"Mia F.",r:4.9,t:"Aucune odeur, emballage propre.",d:"24/09/2025" },
+      { n:"Tom L.",r:5.0,t:"Livraison rapide. L parfait (1m82).",d:"22/09/2025" },
+      { n:"Zoé K.",r:4.9,t:"Super douce, ne gratte pas.",d:"21/09/2025" },
+      { n:"Ethan C.",r:4.9,t:"Look propre. XL pour oversize.",d:"19/09/2025" },
+      { n:"Lina H.",r:5.0,t:"Ma veste préférée de la saison !",d:"18/09/2025" },
+      { n:"Nina E.",r:4.9,t:"Couleurs stylées. Très contente.",d:"16/09/2025" },
+      { n:"Rayan Z.",r:5.0,t:"Top qualité, chaude et légère.",d:"14/09/2025" },
+      { n:"Léa J.",r:4.8,t:"Parfaite au quotidien. S ok (1m62).",d:"13/09/2025" },
+      { n:"Adam O.",r:5.0,t:"Très bon produit, rien à redire.",d:"11/09/2025" },
+      { n:"Chloé N.",r:4.9,t:"Jolie matière, tient bien au lavage.",d:"10/09/2025" },
+      { n:"Nolan R.",r:4.9,t:"Quali et confortable, je valide !",d:"08/09/2025" },
+      { n:"Inès U.",r:5.0,t:"Super achat. M parfaite.",d:"07/09/2025" },
+      { n:"Eliott T.",r:4.8,t:"Prend peu la poussière, agréable.",d:"05/09/2025" },
+      { n:"Anaïs Q.",r:4.9,t:"Très douce, col montant top.",d:"04/09/2025" },
+      { n:"Tim T.",r:5.0,t:"Livraison éclair, conforme.",d:"02/09/2025" },
+      { n:"Sarah I.",r:4.9,t:"Nickel pour les matins frais.",d:"31/08/2025" },
+      { n:"Yanis V.",r:5.0,t:"Très chaude, pas lourde.",d:"29/08/2025" },
+      { n:"Maëlys W.",r:4.9,t:"Couleurs modernes, coupe mixte.",d:"28/08/2025" },
+      { n:"Ibrahim B.",r:5.0,t:"Qualité/prix imbattable.",d:"26/08/2025" },
+      { n:"Alicia G.",r:4.9,t:"S en taille, rendu top.",d:"25/08/2025" },
+      { n:"Mehdi P.",r:4.8,t:"Bonne finition, agréable.",d:"23/08/2025" },
+      { n:"Eva D.",r:5.0,t:"Matière cosy, j’adore !",d:"22/08/2025" },
+      { n:"Noémie L.",r:4.9,t:"Col ajusté, zip solide.",d:"20/08/2025" },
+      { n:"Sami A.",r:5.0,t:"Top qualité, tous les jours.",d:"19/08/2025" },
+      { n:"Julie Y.",r:4.9,t:"Comme sur les photos.",d:"17/08/2025" },
+      { n:"Mathis C.",r:5.0,t:"Bonne longueur (1m78).",d:"16/08/2025" },
+      { n:"Nora E.",r:4.9,t:"Simple, stylée, efficace.",d:"14/08/2025" },
+      { n:"Kylian R.",r:5.0,t:"Idéale le soir. Je recommande.",d:"13/08/2025" },
+      { n:"Ava M.",r:4.9,t:"Ne peluche pas pour l’instant.",d:"11/08/2025" },
+      { n:"Lenny S.",r:5.0,t:"Vraiment top, je valide !",d:"09/08/2025" },
+      { n:"Salomé N.",r:4.9,t:"Confort ++, look moderne.",d:"08/08/2025" },
+      { n:"Gabriel K.",r:5.0,t:"Se marie avec tout.",d:"06/08/2025" },
+      { n:"Loris X.",r:4.8,t:"Un poil ample, j’aime.",d:"05/08/2025" },
+      { n:"Elisa H.",r:5.0,t:"Je vais en reprendre une.",d:"03/08/2025" },
+      { n:"Roxane F.",r:4.9,t:"Parfaite intérieur/extérieur.",d:"01/08/2025" },
+      { n:"Younes Z.",r:5.0,t:"Qualité premium, merci !",d:"31/07/2025" },
+      { n:"Nahia V.",r:4.9,t:"Parfait mi-saison.",d:"29/07/2025" },
+      { n:"Ilyes D.",r:5.0,t:"Conforme à la description.",d:"28/07/2025" },
+      { n:"Amandine J.",r:4.9,t:"S ok. Envoi rapide.",d:"26/07/2025" },
+      { n:"Quentin U.",r:5.0,t:"Je la porte tous les jours.",d:"24/07/2025" }
+    ];
+    const reviewsEl=document.getElementById('reviews');
+    let visible=8;
+    function starBar(r){ const full=Math.round(r); return '⭐'.repeat(full)+'<span style="color:#777">'+ '☆'.repeat(5-full) +'</span>'; }
+    function renderReviews(){
+      reviewsEl.innerHTML='';
+      REVIEWS.slice(0,visible).forEach(rv=>{
+        const d=document.createElement('div'); d.className='review';
+        d.innerHTML=`
+          <div class="head">
+            <strong>${rv.n}</strong>
+            <div class="stars" title="${rv.r}/5">${starBar(rv.r)} <span class="meta">${rv.r}/5</span></div>
+          </div>
+          <div class="txt">${rv.t}</div>
+          <div class="meta">${rv.d} — Achat vérifié</div>
+        `;
+        reviewsEl.appendChild(d);
+      });
+      if(visible>=REVIEWS.length) document.getElementById('showMore').style.display='none';
+    }
+    renderReviews();
+    document.getElementById('showMore').onclick=()=>{ visible+=8; renderReviews(); };
+
+    document.getElementById('year').textContent=new Date().getFullYear();
+  </script>
+</body>
+</html>
