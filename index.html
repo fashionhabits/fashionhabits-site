@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -51,7 +50,7 @@
     .hero-card{border-radius:var(--radius);overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow)}
     .hero-card img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/5;filter:contrast(1.05)}
 
-    /* Section */
+    /* Sections */
     section{padding:56px 0;border-top:1px solid rgba(255,255,255,.06)}
     h2.section-title{font-size:clamp(24px,4vw,36px);margin:0 0 18px 0}
     p.section-sub{color:var(--muted);margin:0 0 24px 0}
@@ -105,6 +104,7 @@
       .menu{display:none}
       .grid{grid-template-columns:1fr}
     }
+
     /* Reveal animations */
     .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
     .reveal.show{opacity:1;transform:none}
@@ -152,7 +152,7 @@
   <section id="shop">
     <div class="container">
       <h2 class="section-title">Boutique</h2>
-      <p class="section-sub">6 articles pour commencer — tu pourras en ajouter d'autres facilement.</p>
+      <p class="section-sub">Sélection de départ — tu peux ajouter/retirer des articles facilement.</p>
       <div class="grid" id="productGrid"></div>
     </div>
   </section>
@@ -167,7 +167,7 @@
   <section id="contact">
     <div class="container">
       <h2 class="section-title">Contact</h2>
-      <p class="section-sub">Une question sur une taille, un retour, ou une commande ? Écris‑nous à <a href="mailto:hello@fashionhabits.fr">hello@fashionhabits.fr</a>.</p>
+      <p class="section-sub">Une question sur une taille, un retour, ou une commande ? Écris-nous à <a href="mailto:hello@fashionhabits.fr">hello@fashionhabits.fr</a>.</p>
     </div>
   </section>
 
@@ -182,7 +182,7 @@
     </div>
   </footer>
 
-  <!-- Cart Drawer -->
+  <!-- Panier -->
   <aside class="drawer" id="drawer">
     <header>
       <strong>Panier</strong>
@@ -192,139 +192,94 @@
     <footer>
       <div class="summary"><span>Total</span><strong id="cartTotal">0,00 €</strong></div>
       <button class="checkout" id="checkoutBtn">Payer maintenant</button>
-      <div class="note">Le paiement est sécurisé via Stripe. Les cartes bancaires principales sont acceptées.</div>
+      <div class="note">Paiement sécurisé via Stripe. (À activer dans <code>create-checkout.js</code>)</div>
       <div class="error" id="error"></div>
       <div class="success" id="success"></div>
     </footer>
   </aside>
 
   <script>
+    /* =================== PRODUITS =================== */
     const PRODUCTS = [
-  {
-    "id": "tee-minimal-white",
-    "title": "T-shirt Minimal Blanc",
-    "price": 29.9,
-    "category": "Vêtements",
-    "gender": "Unisexe",
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "image": "https://images.unsplash.com/photo-1520975922284-5f5730d0f9b5?q=80&w=1200&auto=format&fit=crop",
-    "priceId": "price_xxx_TSHIRT_WHITE"
-  },
-  {
-    "id": "hoodie-black-street",
-    "title": "Hoodie Noir Street",
-    "price": 54.9,
-    "category": "Vêtements",
-    "gender": "Unisexe",
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "image": "https://images.unsplash.com/photo-1520975867597-0f4a5f1f9f9e?q=80&w=1200&auto=format&fit=crop",
-    "priceId": "price_xxx_HOODIE_BLACK"
-  },
-  {
-    "id": "cargo-olive",
-    "title": "Pantalon Cargo Olive",
-    "price": 49.9,
-    "category": "Vêtements",
-    "gender": "Homme",
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "image": "https://images.unsplash.com/photo-1516826957135-700dedea698c?q=80&w=1200&auto=format&fit=crop",
-    "priceId": "price_xxx_CARGO_OLIVE"
-  },
-  {
-    "id": "dress-satin-black",
-    "title": "Robe Satin Noire",
-    "price": 59.9,
-    "category": "Vêtements",
-    "gender": "Femme",
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "image": "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop",
-    "priceId": "price_xxx_DRESS_BLACK"
-  },
-  {
-    "id": "sneakers-white-minimal",
-    "title": "Sneakers Blanches Minimal",
-    "price": 69.9,
-    "category": "Chaussures",
-    "gender": "Unisexe",
-    "sizes": [
-      "36",
-      "37",
-      "38",
-      "39",
-      "40",
-      "41",
-      "42",
-      "43",
-      "44"
-    ],
-    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop",
-    "priceId": "price_xxx_SNEAKERS_WHITE"
-  },
-  {
-    "id": "sneakers-chunky-black",
-    "title": "Sneakers Chunky Noires",
-    "price": 79.9,
-    "category": "Chaussures",
-    "gender": "Unisexe",
-    "sizes": [
-      "36",
-      "37",
-      "38",
-      "39",
-      "40",
-      "41",
-      "42",
-      "43",
-      "44"
-    ],
-    "image": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=1200&auto=format&fit=crop",
-    "priceId": "price_xxx_SNEAKERS_CHUNKY"
-  }
-  ,
-  {
-    "id": "veste-polaire",
-    "title": "Veste Polaire",
-    "price": 39.99,
-    "category": "Vêtements",
-    "gender": "Unisexe",
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "image": "assets/veste-polaire-1.png",
-    "priceId": "price_xxx_VESTE_POLAIRE"
-  }
-];
+      {
+        "id": "tee-minimal-white",
+        "title": "T-shirt Minimal Blanc",
+        "price": 29.9,
+        "category": "Vêtements",
+        "gender": "Unisexe",
+        "sizes": ["XS","S","M","L","XL"],
+        "image": "https://images.unsplash.com/photo-1520975922284-5f5730d0f9b5?q=80&w=1200&auto=format&fit=crop",
+        "priceId": "price_xxx_TSHIRT_WHITE"
+      },
+      {
+        "id": "hoodie-black-street",
+        "title": "Hoodie Noir Street",
+        "price": 54.9,
+        "category": "Vêtements",
+        "gender": "Unisexe",
+        "sizes": ["S","M","L","XL"],
+        "image": "https://images.unsplash.com/photo-1520975867597-0f4a5f1f9f9e?q=80&w=1200&auto=format&fit=crop",
+        "priceId": "price_xxx_HOODIE_BLACK"
+      },
+      {
+        "id": "cargo-olive",
+        "title": "Pantalon Cargo Olive",
+        "price": 49.9,
+        "category": "Vêtements",
+        "gender": "Homme",
+        "sizes": ["S","M","L","XL"],
+        "image": "https://images.unsplash.com/photo-1516826957135-700dedea698c?q=80&w=1200&auto=format&fit=crop",
+        "priceId": "price_xxx_CARGO_OLIVE"
+      },
+      {
+        "id": "dress-satin-black",
+        "title": "Robe Satin Noire",
+        "price": 59.9,
+        "category": "Vêtements",
+        "gender": "Femme",
+        "sizes": ["XS","S","M","L"],
+        "image": "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop",
+        "priceId": "price_xxx_DRESS_BLACK"
+      },
+      {
+        "id": "sneakers-white-minimal",
+        "title": "Sneakers Blanches Minimal",
+        "price": 69.9,
+        "category": "Chaussures",
+        "gender": "Unisexe",
+        "sizes": ["36","37","38","39","40","41","42","43","44"],
+        "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop",
+        "priceId": "price_xxx_SNEAKERS_WHITE"
+      },
+      {
+        "id": "sneakers-chunky-black",
+        "title": "Sneakers Chunky Noires",
+        "price": 79.9,
+        "category": "Chaussures",
+        "gender": "Unisexe",
+        "sizes": ["36","37","38","39","40","41","42","43","44"],
+        "image": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=1200&auto=format&fit=crop",
+        "priceId": "price_xxx_SNEAKERS_CHUNKY"
+      },
+      /* ----- Ton produit ajouté : Veste Polaire ----- */
+      {
+        "id": "veste-polaire",
+        "title": "Veste Polaire",
+        "price": 39.99,
+        "category": "Vêtements",
+        "gender": "Unisexe",
+        "sizes": ["XS","S","M","L","XL"],
+        "image": "assets/veste-polaire-1.png",
+        "priceId": "price_xxx_VESTE_POLAIRE"
+      }
+    ];
+    /* ================================================= */
 
-    // --- Utilities
+    /* Utils */
     const formatPrice = (n) => new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR' }).format(n);
     const el = (html) => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
 
-    // --- Render products
+    /* Render products */
     const grid = document.getElementById('productGrid');
     PRODUCTS.forEach(p => {
       const sizes = p.sizes.map(s => `<button class="pill" data-size="${s}">${s}</button>`).join('');
@@ -347,17 +302,16 @@
       grid.appendChild(card);
     });
 
-    // --- Size selection
-    document.querySelectorAll('.variant').forEach(v => {
-      v.addEventListener('click', (e) => {
-        if(e.target.classList.contains('pill')) {
-          v.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-          e.target.classList.add('active');
-        }
-      });
+    /* Size selection */
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.pill');
+      if(!btn) return;
+      const wrapper = btn.closest('.variant');
+      wrapper.querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
+      btn.classList.add('active');
     });
 
-    // --- Cart state
+    /* Cart state */
     const CART_KEY = 'fh_cart_v1';
     const loadCart = () => JSON.parse(localStorage.getItem(CART_KEY) || '[]');
     const saveCart = (c) => localStorage.setItem(CART_KEY, JSON.stringify(c));
@@ -401,25 +355,25 @@
       updateBadge();
     };
 
-    // --- Add to cart
-    document.querySelectorAll('.add-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = btn.dataset.id;
-        const variant = document.querySelector(\`.variant[data-id="\${id}"]\`);
-        const active = variant.querySelector('.pill.active');
-        if(!active) { alert('Choisis une taille avant d’ajouter au panier.'); return; }
-        const size = active.dataset.size;
-        const cart = loadCart();
-        const existing = cart.find(i => i.id === id && i.size === size);
-        if(existing) existing.qty += 1;
-        else cart.push({ id, size, qty: 1 });
-        saveCart(cart);
-        renderCart();
-        openDrawer();
-      });
+    /* Add to cart */
+    document.addEventListener('click', (e) => {
+      const add = e.target.closest('.add-btn');
+      if(!add) return;
+      const id = add.dataset.id;
+      const variant = document.querySelector(`.variant[data-id="${id}"]`);
+      const active = variant.querySelector('.pill.active');
+      if(!active) { alert('Choisis une taille avant d’ajouter au panier.'); return; }
+      const size = active.dataset.size;
+      const cart = loadCart();
+      const existing = cart.find(i => i.id === id && i.size === size);
+      if(existing) existing.qty += 1;
+      else cart.push({ id, size, qty: 1 });
+      saveCart(cart);
+      renderCart();
+      openDrawer();
     });
 
-    // --- Qty buttons
+    /* Qty buttons in cart */
     cartItems.addEventListener('click', (e) => {
       if(e.target.tagName !== 'BUTTON') return;
       const id = e.target.dataset.id;
@@ -434,7 +388,7 @@
       renderCart();
     });
 
-    // --- Drawer open/close
+    /* Drawer open/close */
     const openCart = document.getElementById('openCart');
     const closeCart = document.getElementById('closeCart');
     const openDrawer = () => drawer.classList.add('open');
@@ -443,7 +397,7 @@
     closeCart.addEventListener('click', closeDrawer);
     updateBadge();
 
-    // --- Checkout via Netlify Function (Stripe Checkout)
+    /* Checkout (Netlify Function / Stripe) */
     const checkoutBtn = document.getElementById('checkoutBtn');
     const errorEl = document.getElementById('error');
     const successEl = document.getElementById('success');
@@ -454,7 +408,6 @@
       const cart = loadCart();
       if(cart.length === 0) { errorEl.textContent = 'Ton panier est vide.'; return; }
 
-      // Build Stripe line_items from cart using priceId placeholders
       const line_items = cart.map(item => {
         const p = PRODUCTS.find(x => x.id === item.id);
         return { price: p.priceId, quantity: item.qty };
@@ -468,30 +421,25 @@
         });
         if(!res.ok) throw new Error('Erreur réseau');
         const data = await res.json();
-        if(data.url) {
-          // Redirect to Stripe Checkout
-          window.location.href = data.url;
-        } else if(data.error) {
-          errorEl.textContent = data.error;
-        } else {
-          errorEl.textContent = 'Réponse inattendue du serveur.';
-        }
+        if(data.url) window.location.href = data.url;
+        else if(data.error) errorEl.textContent = data.error;
+        else errorEl.textContent = 'Réponse inattendue du serveur.';
       } catch (err) {
         errorEl.textContent = 'Paiement non configuré. Suis le README pour activer Stripe.';
       }
     });
 
-    // --- Reveal on scroll
+    /* Reveal on scroll */
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => e.isIntersecting && e.target.classList.add('show'));
     }, { threshold: .16 });
     document.querySelectorAll('.reveal').forEach(n => io.observe(n));
 
-    // Year
+    /* Year */
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 
-  <!-- ==== PAGES LÉGALES (ancrées) ==== -->
+  <!-- ==== PAGES LÉGALES ==== -->
   <section id="legal-mentions">
     <div class="container">
       <h2 class="section-title">Mentions légales</h2>
