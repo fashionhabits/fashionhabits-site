@@ -58,7 +58,14 @@
     /* Products grid */
     .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
     .card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
-    .card img{aspect-ratio:4/5;object-fit:cover}
+    .card .media{position:relative}
+    .card img.main{aspect-ratio:4/5;object-fit:cover;border-bottom:1px solid rgba(255,255,255,.06);cursor:zoom-in}
+    .thumbs{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,.06);overflow:auto}
+    .thumbs img{width:56px;height:70px;object-fit:cover;border-radius:10px;border:2px solid transparent;opacity:.85;cursor:pointer;flex:0 0 auto}
+    .thumbs img.active{border-color:var(--accent-end);opacity:1}
+    .nav-arrows{position:absolute;inset:auto 0 0 0;display:flex;justify-content:space-between;padding:10px}
+    .nav-arrows button{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:10px;padding:6px 10px;cursor:pointer}
+
     .card-body{padding:14px}
     .meta{display:flex;justify-content:space-between;align-items:center;margin-top:6px;color:var(--muted)}
     .price{font-weight:800}
@@ -108,6 +115,19 @@
     /* Reveal animations */
     .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
     .reveal.show{opacity:1;transform:none}
+
+    /* --- Lightbox --- */
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:200}
+    .lightbox.open{display:flex}
+    .lb-panel{width:min(980px,96vw);background:#0f1012;border:1px solid rgba(255,255,255,.08);border-radius:18px;box-shadow:var(--shadow);padding:16px}
+    .lb-main{aspect-ratio:4/5;max-height:70vh;background:#0b0c0e;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .lb-main img{max-width:100%;max-height:100%;object-fit:contain}
+    .lb-thumbs{display:flex;gap:10px;margin-top:12px;overflow:auto}
+    .lb-thumbs img{width:84px;height:100px;object-fit:cover;border-radius:10px;border:2px solid transparent;cursor:pointer;opacity:.85}
+    .lb-thumbs img.active{border-color:var(--accent-end);opacity:1}
+    .lb-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .lb-actions button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;border-radius:10px;padding:8px 12px;cursor:pointer}
+    .lb-close{background:transparent;border:none;color:#fff;font-size:22px;cursor:pointer}
   </style>
 </head>
 <body>
@@ -198,9 +218,41 @@
     </footer>
   </aside>
 
+  <!-- === LIGHTBOX / GALLERY === -->
+  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
+    <div class="lb-panel">
+      <div class="lb-actions">
+        <button class="lb-close" id="lbClose" aria-label="Fermer">✕</button>
+        <div class="muted">Galerie produit</div>
+        <div>
+          <button id="lbPrev" aria-label="Précédent">◀</button>
+          <button id="lbNext" aria-label="Suivant">▶</button>
+        </div>
+      </div>
+      <div class="lb-main">
+        <img id="lbMain" alt="Aperçu produit">
+      </div>
+      <div class="lb-thumbs" id="lbThumbs"></div>
+    </div>
+  </div>
+
   <script>
     /* =================== PRODUITS =================== */
     const PRODUCTS = [
+      /* ----- 1) Veste Polaire (en premier) ----- */
+      {
+        "id": "veste-polaire",
+        "title": "Veste Polaire",
+        "price": 39.99,
+        "category": "Vêtements",
+        "gender": "Unisexe",
+        "sizes": ["XS","S","M","L","XL"],
+        "image": "assets/veste-polaire-1.png",
+        "priceId": "price_xxx_VESTE_POLAIRE",
+        "description": "Veste polaire bicolore, col montant, poches pratiques. Chaude et confortable pour l’automne/hiver."
+      },
+
+      /* ----- 2) Produits existants ----- */
       {
         "id": "tee-minimal-white",
         "title": "T-shirt Minimal Blanc",
@@ -260,19 +312,19 @@
         "sizes": ["36","37","38","39","40","41","42","43","44"],
         "image": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=1200&auto=format&fit=crop",
         "priceId": "price_xxx_SNEAKERS_CHUNKY"
-      },
-      /* ----- Ton produit ajouté : Veste Polaire ----- */
-      {
-        "id": "veste-polaire",
-        "title": "Veste Polaire",
-        "price": 39.99,
-        "category": "Vêtements",
-        "gender": "Unisexe",
-        "sizes": ["XS","S","M","L","XL"],
-        "image": "assets/veste-polaire-5.png",
-        "priceId": "price_xxx_VESTE_POLAIRE"
       }
     ];
+
+    /* --- Galerie d’images par produit (uniquement pour Veste Polaire pour l’instant) --- */
+    const GALLERY = {
+      "veste-polaire": [
+        "assets/veste-polaire-1.png",
+        "assets/veste-polaire-2.png",
+        "assets/veste-polaire-3.png",
+        "assets/veste-polaire-4.png",
+        "assets/veste-polaire-5.png"
+      ]
+    };
     /* ================================================= */
 
     /* Utils */
@@ -283,9 +335,36 @@
     const grid = document.getElementById('productGrid');
     PRODUCTS.forEach(p => {
       const sizes = p.sizes.map(s => `<button class="pill" data-size="${s}">${s}</button>`).join('');
+
+      // si on a une galerie pour ce produit
+      const gallery = GALLERY[p.id];
+      let galleryBlock = '';
+      if (gallery && gallery.length) {
+        const first = gallery[0];
+        const thumbs = gallery.map((src,i)=>`<img src="${src}" data-index="${i}" class="${i===0?'active':''}" alt="miniature ${i+1}">`).join('');
+        galleryBlock = `
+          <div class="media" data-id="${p.id}">
+            <img src="${first}" alt="${p.title}" class="main product-img" data-id="${p.id}">
+            <div class="nav-arrows">
+              <button class="prev" data-id="${p.id}">◀</button>
+              <button class="next" data-id="${p.id}">▶</button>
+            </div>
+            <div class="thumbs" data-id="${p.id}">
+              ${thumbs}
+            </div>
+          </div>
+        `;
+      } else {
+        galleryBlock = `
+          <div class="media" data-id="${p.id}">
+            <img src="${p.image}" alt="${p.title}" class="main product-img" data-id="${p.id}">
+          </div>
+        `;
+      }
+
       const card = el(`
-        <article class="card reveal">
-          <img src="${p.image}" alt="${p.title}">
+        <article class="card reveal" title="${p.description ? p.description : ''}">
+          ${galleryBlock}
           <div class="card-body">
             <h3 style="margin:0;font-size:1.05rem">${p.title}</h3>
             <div class="meta">
@@ -300,6 +379,38 @@
         </article>
       `);
       grid.appendChild(card);
+    });
+
+    /* Thumbnails + nav (carte) */
+    document.addEventListener('click', (e) => {
+      // thumbs
+      const thumb = e.target.closest('.thumbs img');
+      if (thumb) {
+        const wrap = thumb.closest('.media');
+        const id = wrap.dataset.id;
+        const index = Number(thumb.dataset.index);
+        const main = wrap.querySelector('.main');
+        const gal = GALLERY[id];
+        if (gal && gal[index]) {
+          main.src = gal[index];
+          wrap.querySelectorAll('.thumbs img').forEach(img => img.classList.remove('active'));
+          thumb.classList.add('active');
+        }
+      }
+      // arrows
+      if (e.target.classList.contains('prev') || e.target.classList.contains('next')) {
+        const wrap = e.target.closest('.media');
+        const id = wrap.dataset.id;
+        const gal = GALLERY[id];
+        if (!gal) return;
+        const main = wrap.querySelector('.main');
+        const currentIndex = gal.findIndex(src => main.src.includes(src));
+        const dir = e.target.classList.contains('prev') ? -1 : 1;
+        const nextIndex = (currentIndex + dir + gal.length) % gal.length;
+        main.src = gal[nextIndex];
+        const thumbs = wrap.querySelectorAll('.thumbs img');
+        thumbs.forEach((t,i)=> t.classList.toggle('active', i===nextIndex));
+      }
     });
 
     /* Size selection */
@@ -427,6 +538,57 @@
       } catch (err) {
         errorEl.textContent = 'Paiement non configuré. Suis le README pour activer Stripe.';
       }
+    });
+
+    /* Lightbox logic */
+    const lightbox = document.getElementById('lightbox');
+    const lbMain = document.getElementById('lbMain');
+    const lbThumbs = document.getElementById('lbThumbs');
+    const lbClose = document.getElementById('lbClose');
+    const lbPrev = document.getElementById('lbPrev');
+    const lbNext = document.getElementById('lbNext');
+
+    let lbImages = [];
+    let lbIndex = 0;
+
+    function openLightbox(images, startIndex=0){
+      lbImages = images;
+      lbIndex = startIndex;
+      renderLightbox();
+      lightbox.classList.add('open');
+    }
+    function closeLightbox(){ lightbox.classList.remove('open'); }
+    function renderLightbox(){
+      if(!lbImages.length) return;
+      lbMain.src = lbImages[lbIndex];
+      lbThumbs.innerHTML = '';
+      lbImages.forEach((src, i) => {
+        const img = new Image();
+        img.src = src; img.alt = "Miniature";
+        if(i === lbIndex) img.classList.add('active');
+        img.addEventListener('click', () => { lbIndex = i; renderLightbox(); });
+        lbThumbs.appendChild(img);
+      });
+    }
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', (e) => {
+      if(!lightbox.classList.contains('open')) return;
+      if(e.key === 'Escape') closeLightbox();
+      if(e.key === 'ArrowLeft') { lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; renderLightbox(); }
+      if(e.key === 'ArrowRight'){ lbIndex = (lbIndex + 1) % lbImages.length; renderLightbox(); }
+    });
+    lbPrev.addEventListener('click', ()=>{ lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; renderLightbox(); });
+    lbNext.addEventListener('click', ()=>{ lbIndex = (lbIndex + 1) % lbImages.length; renderLightbox(); });
+
+    // Ouvrir la lightbox au clic sur l'image principale d'une carte
+    document.addEventListener('click', (e) => {
+      const img = e.target.closest('.product-img');
+      if(!img) return;
+      const id = img.dataset.id;
+      const gallery = GALLERY[id];
+      if(gallery && gallery.length){ openLightbox(gallery, 0); }
+      else { openLightbox([img.src], 0); }
     });
 
     /* Reveal on scroll */
