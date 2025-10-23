@@ -8,21 +8,24 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root{
       --bg:#0a0a0b;
       --panel:#121214;
       --text:#f3f4f6;
       --muted:#a3a3a3;
-      --accent-start:#7c3aed; /* violet */
-      --accent-end:#22d3ee;   /* cyan */
+      --accent-start:#7c3aed;
+      --accent-end:#22d3ee;
       --success:#10b981;
       --danger:#ef4444;
       --shadow:0 10px 30px rgba(0,0,0,.3);
       --radius:18px;
+      --border:1px solid rgba(255,255,255,.08);
+      --glass:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji";line-height:1.5}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Noto Sans";line-height:1.5}
     a{color:inherit;text-decoration:none}
     img{display:block;max-width:100%}
 
@@ -37,35 +40,27 @@
     .menu a.active,.menu a:hover{color:var(--text)}
     .cart-btn{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent-start),var(--accent-end));border:none;color:white;padding:10px 14px;border-radius:14px;cursor:pointer;font-weight:700;box-shadow:var(--shadow)}
 
-    /* Hero */
-    .hero{position:relative;overflow:hidden}
-    .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;padding:64px 0}
+    /* Hero (image retirée → layout 1 colonne) */
+    .hero{border-bottom:1px solid rgba(255,255,255,.06)}
+    .hero .wrap{display:block;padding:56px 0}
     .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.06);color:var(--muted);border:1px solid rgba(255,255,255,.08)}
-    .title{font-size:clamp(32px,6vw,56px);line-height:1.05;margin:14px 0;font-weight:800}
-    .subtitle{color:var(--muted);max-width:60ch}
+    .title{font-size:clamp(32px,6vw,56px);line-height:1.05;margin:14px 0 10px;font-weight:800}
+    .subtitle{color:var(--muted);max-width:65ch}
     .cta{margin-top:20px;display:flex;gap:12px}
     .btn{display:inline-block;padding:12px 18px;border-radius:14px;font-weight:700;border:1px solid rgba(255,255,255,.12)}
     .btn-primary{background:linear-gradient(135deg,var(--accent-start),var(--accent-end));border:none;color:white;box-shadow:var(--shadow)}
     .btn-ghost{color:var(--text)}
-    .hero-card{border-radius:var(--radius);overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow)}
-    .hero-card img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/5;filter:contrast(1.05)}
 
-    /* Sections */
+    /* Section */
     section{padding:56px 0;border-top:1px solid rgba(255,255,255,.06)}
     h2.section-title{font-size:clamp(24px,4vw,36px);margin:0 0 18px 0}
     p.section-sub{color:var(--muted);margin:0 0 24px 0}
 
     /* Products grid */
     .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
-    .card .media{position:relative}
-    .card img.main{aspect-ratio:4/5;object-fit:cover;border-bottom:1px solid rgba(255,255,255,.06);cursor:zoom-in}
-    .thumbs{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,.06);overflow:auto}
-    .thumbs img{width:56px;height:70px;object-fit:cover;border-radius:10px;border:2px solid transparent;opacity:.85;cursor:pointer;flex:0 0 auto}
-    .thumbs img.active{border-color:var(--accent-end);opacity:1}
-    .nav-arrows{position:absolute;inset:auto 0 0 0;display:flex;justify-content:space-between;padding:10px}
-    .nav-arrows button{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:10px;padding:6px 10px;cursor:pointer}
-
+    .card{background:var(--glass);border:var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;cursor:pointer}
+    .card img{aspect-ratio:4/5;object-fit:cover;transition:transform .35s ease}
+    .card:hover img{transform:scale(1.03)}
     .card-body{padding:14px}
     .meta{display:flex;justify-content:space-between;align-items:center;margin-top:6px;color:var(--muted)}
     .price{font-weight:800}
@@ -95,6 +90,33 @@
     .usp .block{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:16px;border-radius:16px}
     .muted{color:var(--muted)}
 
+    /* ---------- Product Modal (fiche produit) ---------- */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px;z-index:120}
+    .overlay.show{display:flex}
+    .modal{width:min(1000px,100%);background:var(--panel);border:var(--border);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
+    .modal header{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:var(--border)}
+    .modal header h3{margin:0;font-size:1.25rem}
+    .close{border:none;background:transparent;color:var(--muted);font-size:1.4rem;cursor:pointer}
+    .modal-body{display:grid;grid-template-columns:1.05fr .95fr}
+    .gallery{border-right:var(--border);background:rgba(255,255,255,.02)}
+    .gallery .main{aspect-ratio:4/5;object-fit:cover;width:100%;cursor:zoom-in}
+    .thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px;border-top:var(--border)}
+    .thumbs img{aspect-ratio:1/1;object-fit:cover;border-radius:10px;border:1px solid rgba(255,255,255,.1);cursor:pointer}
+    .details{padding:18px}
+    .price-lg{font-size:1.4rem;font-weight:800}
+    .desc{color:var(--muted);margin:8px 0 14px}
+    .sizes{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+    .cta-row{display:flex;gap:10px;margin-top:10px}
+    .primary{flex:1;background:linear-gradient(135deg,var(--accent-start),var(--accent-end));border:none;color:#fff;padding:12px 16px;border-radius:12px;font-weight:800;cursor:pointer}
+    .secondary{padding:12px 16px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font-weight:700;cursor:pointer}
+    .rating{display:flex;align-items:center;gap:6px;margin-top:6px}
+    .star{filter:grayscale(0)}
+    .reviews{margin-top:16px;border-top:var(--border);padding-top:14px}
+    .review{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:10px 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+    .avatar{width:36px;height:36px;border-radius:999px;background:linear-gradient(135deg,var(--accent-start),var(--accent-end))}
+    .review strong{display:block}
+    .review p{margin:4px 0 0;color:var(--muted)}
+
     /* Footer */
     footer{padding:30px 0;color:var(--muted)}
     .links{display:flex;gap:16px;flex-wrap:wrap}
@@ -103,31 +125,15 @@
 
     /* Responsive */
     @media (max-width: 980px){
-      .hero .wrap{grid-template-columns:1fr;gap:20px}
       .grid{grid-template-columns:repeat(2,1fr)}
       .usp{grid-template-columns:1fr}
+      .modal-body{grid-template-columns:1fr}
+      .gallery{border-right:none;border-bottom:var(--border)}
     }
     @media (max-width: 640px){
       .menu{display:none}
       .grid{grid-template-columns:1fr}
     }
-
-    /* Reveal animations */
-    .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
-    .reveal.show{opacity:1;transform:none}
-
-    /* --- Lightbox --- */
-    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:200}
-    .lightbox.open{display:flex}
-    .lb-panel{width:min(980px,96vw);background:#0f1012;border:1px solid rgba(255,255,255,.08);border-radius:18px;box-shadow:var(--shadow);padding:16px}
-    .lb-main{aspect-ratio:4/5;max-height:70vh;background:#0b0c0e;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center}
-    .lb-main img{max-width:100%;max-height:100%;object-fit:contain}
-    .lb-thumbs{display:flex;gap:10px;margin-top:12px;overflow:auto}
-    .lb-thumbs img{width:84px;height:100px;object-fit:cover;border-radius:10px;border:2px solid transparent;cursor:pointer;opacity:.85}
-    .lb-thumbs img.active{border-color:var(--accent-end);opacity:1}
-    .lb-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-    .lb-actions button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;border-radius:10px;padding:8px 12px;cursor:pointer}
-    .lb-close{background:transparent;border:none;color:#fff;font-size:22px;cursor:pointer}
   </style>
 </head>
 <body>
@@ -147,36 +153,34 @@
     </div>
   </header>
 
+  <!-- HERO sans l’image de droite -->
   <main id="home" class="hero">
     <div class="container wrap">
-      <div>
-        <span class="badge">Nouveauté • Streetwear & Chic</span>
-        <h2 class="title">Affirme ton style.<br/>Épure, moderne, avec du caractère.</h2>
-        <p class="subtitle">Sélection unisexe de pièces essentielles : coupes nettes, matières confort, détails premium. Livraison rapide en France & Europe.</p>
-        <div class="cta">
-          <a href="#shop" class="btn btn-primary">Voir la boutique</a>
-          <a href="#about" class="btn btn-ghost">En savoir plus</a>
-        </div>
-        <div class="usp">
-          <div class="block reveal"><strong>Livraison 48–72h</strong><div class="muted">France Métropolitaine</div></div>
-          <div class="block reveal"><strong>Retours 14 jours</strong><div class="muted">Échange ou remboursement</div></div>
-          <div class="block reveal"><strong>Paiement sécurisé</strong><div class="muted">Stripe • PayPal</div></div>
-        </div>
+      <span class="badge">Nouveauté • Streetwear & Chic</span>
+      <h2 class="title">Affirme ton style.<br/>Épure, moderne, avec du caractère.</h2>
+      <p class="subtitle">Sélection unisexe de pièces essentielles : coupes nettes, matières confort, détails premium. Livraison rapide en France & Europe.</p>
+      <div class="cta">
+        <a href="#shop" class="btn btn-primary">Voir la boutique</a>
+        <a href="#about" class="btn btn-ghost">En savoir plus</a>
       </div>
-      <div class="hero-card reveal">
-        <img alt="Look streetwear & chic" src="https://images.unsplash.com/photo-1520975858867-3253d77643af?q=80&w=1200&auto=format&fit=crop" />
+      <div class="usp">
+        <div class="block"><strong>Livraison 48–72h</strong><div class="muted">France Métropolitaine</div></div>
+        <div class="block"><strong>Retours 14 jours</strong><div class="muted">Échange ou remboursement</div></div>
+        <div class="block"><strong>Paiement sécurisé</strong><div class="muted">Stripe • PayPal</div></div>
       </div>
     </div>
   </main>
 
+  <!-- BOUTIQUE -->
   <section id="shop">
     <div class="container">
       <h2 class="section-title">Boutique</h2>
-      <p class="section-sub">Sélection de départ — tu peux ajouter/retirer des articles facilement.</p>
+      <p class="section-sub">Clique sur un produit pour voir les détails, les photos en grand, et les avis.</p>
       <div class="grid" id="productGrid"></div>
     </div>
   </section>
 
+  <!-- Autres sections (inchangées) -->
   <section id="about">
     <div class="container">
       <h2 class="section-title">À propos de Fashionhabits</h2>
@@ -202,7 +206,7 @@
     </div>
   </footer>
 
-  <!-- Panier -->
+  <!-- PANIER -->
   <aside class="drawer" id="drawer">
     <header>
       <strong>Panier</strong>
@@ -212,97 +216,167 @@
     <footer>
       <div class="summary"><span>Total</span><strong id="cartTotal">0,00 €</strong></div>
       <button class="checkout" id="checkoutBtn">Payer maintenant</button>
-      <div class="note">Paiement sécurisé via Stripe. (À activer dans <code>create-checkout.js</code>)</div>
+      <div class="note">Le paiement est sécurisé via Stripe. (À configurer plus tard.)</div>
       <div class="error" id="error"></div>
       <div class="success" id="success"></div>
     </footer>
   </aside>
 
-  <!-- === LIGHTBOX / GALLERY === -->
-  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
-    <div class="lb-panel">
-      <div class="lb-actions">
-        <button class="lb-close" id="lbClose" aria-label="Fermer">✕</button>
-        <div class="muted">Galerie produit</div>
-        <div>
-          <button id="lbPrev" aria-label="Précédent">◀</button>
-          <button id="lbNext" aria-label="Suivant">▶</button>
+  <!-- MODAL PRODUIT -->
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <article class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header>
+        <h3 id="modalTitle">Produit</h3>
+        <button class="close" id="modalClose" aria-label="Fermer">✕</button>
+      </header>
+      <div class="modal-body">
+        <div class="gallery">
+          <img id="modalMain" class="main" alt="">
+          <div class="thumbs" id="modalThumbs"></div>
+        </div>
+        <div class="details">
+          <div class="rating" id="modalRating"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin:6px 0 2px">
+            <strong id="modalName" style="font-size:1.15rem"></strong>
+            <span id="modalPrice" class="price-lg"></span>
+          </div>
+          <div class="muted" id="modalMeta" style="margin-bottom:6px"></div>
+          <p class="desc" id="modalDesc"></p>
+
+          <div class="sizes" id="modalSizes"></div>
+          <div class="cta-row">
+            <button class="primary" id="modalAdd">Ajouter au panier</button>
+            <button class="secondary" id="modalBuy">Acheter maintenant</button>
+          </div>
+
+          <div class="reviews" id="modalReviews">
+            <strong style="display:block;margin-bottom:8px">Avis</strong>
+            <!-- avis injectés ici -->
+          </div>
         </div>
       </div>
-      <div class="lb-main">
-        <img id="lbMain" alt="Aperçu produit">
-      </div>
-      <div class="lb-thumbs" id="lbThumbs"></div>
-    </div>
+    </article>
   </div>
 
   <script>
-    /* =================== PRODUITS =================== */
+    // ------- DATA PRODUITS (ajout: description, photos, avis, note)
     const PRODUCTS = [
-      /* ----- 1) Veste Polaire (en premier) ----- */
       {
-        "id": "veste-polaire",
-        "title": "Veste Polaire",
-        "price": 39.99,
-        "category": "Vêtements",
-        "gender": "Unisexe",
-        "sizes": ["XS","S","M","L","XL"],
-        "image": "assets/veste-polaire-5.png",
-        "priceId": "price_xxx_VESTE_POLAIRE",
-        "description": "Veste polaire bicolore, col montant, poches pratiques. Chaude et confortable pour l’automne/hiver."
+        id:"tee-minimal-white",
+        title:"T-shirt Minimal Blanc",
+        price:29.9, category:"Vêtements", gender:"Unisexe",
+        sizes:["XS","S","M","L","XL"],
+        image:"https://images.unsplash.com/photo-1520975922284-5f5730d0f9b5?q=80&w=1200&auto=format&fit=crop",
+        images:[
+          "https://images.unsplash.com/photo-1520975922284-5f5730d0f9b5?q=80&w=1200&auto=format&fit=crop"
+        ],
+        description:"T-shirt coupe droite, coton doux 190g, col renforcé. Idéal en base minimaliste.",
+        rating:4.7,
+        reviews:[
+          {author:"Léa", text:"Bonne coupe, tissu épais. Taille M nickel."},
+          {author:"Romain", text:"Simple et propre, va avec tout."}
+        ],
+        priceId:"price_xxx_TSHIRT_WHITE"
       },
+      {
+        id:"hoodie-black-street",
+        title:"Hoodie Noir Street",
+        price:54.9, category:"Vêtements", gender:"Unisexe",
+        sizes:["S","M","L","XL"],
+        image:"https://images.unsplash.com/photo-1520975867597-0f4a5f1f9f9e?q=80&w=1200&auto=format&fit=crop",
+        images:[
+          "https://images.unsplash.com/photo-1520975867597-0f4a5f1f9f9e?q=80&w=1200&auto=format&fit=crop"
+        ],
+        description:"Molleton doux intérieur brossé, capuche doublée, cordons renforcés, poche kangourou.",
+        rating:4.8,
+        reviews:[
+          {author:"Imane", text:"Hyper confortable, noir profond 👌"},
+          {author:"Alex", text:"Prend la taille au-dessus si tu veux oversize."}
+        ],
+        priceId:"price_xxx_HOODIE_BLACK"
+      },
+      {
+        id:"cargo-olive",
+        title:"Pantalon Cargo Olive",
+        price:49.9, category:"Vêtements", gender:"Homme",
+        sizes:["S","M","L","XL"],
+        image:"https://images.unsplash.com/photo-1516826957135-700dedea698c?q=80&w=1200&auto=format&fit=crop",
+        images:[
+          "https://images.unsplash.com/photo-1516826957135-700dedea698c?q=80&w=1200&auto=format&fit=crop"
+        ],
+        description:"Coupe droite, poches cargo à soufflet, tissu résistant avec une légère élasticité.",
+        rating:4.6,
+        reviews:[
+          {author:"Nicolas", text:"Solide et stylé, coup de cœur."}
+        ],
+        priceId:"price_xxx_CARGO_OLIVE"
+      },
+      {
+        id:"dress-satin-black",
+        title:"Robe Satin Noire",
+        price:59.9, category:"Vêtements", gender:"Femme",
+        sizes:["XS","S","M","L"],
+        image:"https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop",
+        images:[
+          "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop"
+        ],
+        description:"Satin fluide, tombé élégant, bretelles fines réglables. Chic minimal.",
+        rating:4.5,
+        reviews:[
+          {author:"Sonia", text:"Super tombé, très élégant."}
+        ],
+        priceId:"price_xxx_DRESS_BLACK"
+      },
+      {
+        id:"sneakers-white-minimal",
+        title:"Sneakers Blanches Minimal",
+        price:69.9, category:"Chaussures", gender:"Unisexe",
+        sizes:["36","37","38","39","40","41","42","43","44"],
+        image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop",
+        images:[
+          "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop"
+        ],
+        description:"Cuir synthé premium, semelle cousue, silhouette épurée quotidienne.",
+        rating:4.7,
+        reviews:[
+          {author:"Yanis", text:"Confort +++ et faciles à nettoyer."}
+        ],
+        priceId:"price_xxx_SNEAKERS_WHITE"
+      },
+      {
+        id:"veste-polaire",
+        title:"Veste Polaire",
+        price:39.99, category:"Vêtements", gender:"Unisexe",
+        sizes:["XS","S","M","L","XL"],
+        image:"assets/veste-polaire-1.png",
+        images:[
+          "assets/veste-polaire-1.png",
+          "assets/veste-polaire-2.png",
+          "assets/veste-polaire-3.png",
+          "assets/veste-polaire-4.png",
+          "assets/veste-polaire-5.png"
+        ],
+        description:"Reste au chaud avec cette veste à col montant doublée polaire, parfaite pour l’automne et l’hiver. Design bicolore moderne, poches pratiques, zip solide.",
+        rating:4.8,
+        reviews:[
+          {author:"Camille", text:"Très douce et chaude, je recommande !"},
+          {author:"Omar", text:"Style propre, coupe confortable."}
+        ],
+        priceId:"price_xxx_VESTE_POLAIRE"
+      }
     ];
 
-    /* --- Galerie d’images par produit (uniquement pour Veste Polaire pour l’instant) --- */
-    const GALLERY = {
-      "veste-polaire": [
-        "assets/veste-polaire-5.png",
-        "assets/veste-polaire-1.png",
-        "assets/veste-polaire-2.png",
-        "assets/veste-polaire-3.png",
-        "assets/veste-polaire-4.png"
-      ]
-    };
-    /* ================================================= */
-
-    /* Utils */
+    // ------- Utils
     const formatPrice = (n) => new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR' }).format(n);
     const el = (html) => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
 
-    /* Render products */
+    // ------- Rendu grille produits
     const grid = document.getElementById('productGrid');
     PRODUCTS.forEach(p => {
       const sizes = p.sizes.map(s => `<button class="pill" data-size="${s}">${s}</button>`).join('');
-
-      // si on a une galerie pour ce produit
-      const gallery = GALLERY[p.id];
-      let galleryBlock = '';
-      if (gallery && gallery.length) {
-        const first = gallery[0];
-        const thumbs = gallery.map((src,i)=>`<img src="${src}" data-index="${i}" class="${i===0?'active':''}" alt="miniature ${i+1}">`).join('');
-        galleryBlock = `
-          <div class="media" data-id="${p.id}">
-            <img src="${first}" alt="${p.title}" class="main product-img" data-id="${p.id}">
-            <div class="nav-arrows">
-              <button class="prev" data-id="${p.id}">◀</button>
-              <button class="next" data-id="${p.id}">▶</button>
-            </div>
-            <div class="thumbs" data-id="${p.id}">
-              ${thumbs}
-            </div>
-          </div>
-        `;
-      } else {
-        galleryBlock = `
-          <div class="media" data-id="${p.id}">
-            <img src="${p.image}" alt="${p.title}" class="main product-img" data-id="${p.id}">
-          </div>
-        `;
-      }
-
       const card = el(`
-        <article class="card reveal" title="${p.description ? p.description : ''}">
-          ${galleryBlock}
+        <article class="card" data-open="${p.id}">
+          <img src="${p.image}" alt="${p.title}">
           <div class="card-body">
             <h3 style="margin:0;font-size:1.05rem">${p.title}</h3>
             <div class="meta">
@@ -319,48 +393,17 @@
       grid.appendChild(card);
     });
 
-    /* Thumbnails + nav (carte) */
-    document.addEventListener('click', (e) => {
-      // thumbs
-      const thumb = e.target.closest('.thumbs img');
-      if (thumb) {
-        const wrap = thumb.closest('.media');
-        const id = wrap.dataset.id;
-        const index = Number(thumb.dataset.index);
-        const main = wrap.querySelector('.main');
-        const gal = GALLERY[id];
-        if (gal && gal[index]) {
-          main.src = gal[index];
-          wrap.querySelectorAll('.thumbs img').forEach(img => img.classList.remove('active'));
-          thumb.classList.add('active');
+    // ------- Sélection tailles dans la grille
+    document.querySelectorAll('.variant').forEach(v => {
+      v.addEventListener('click', (e) => {
+        if(e.target.classList.contains('pill')) {
+          v.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+          e.target.classList.add('active');
         }
-      }
-      // arrows
-      if (e.target.classList.contains('prev') || e.target.classList.contains('next')) {
-        const wrap = e.target.closest('.media');
-        const id = wrap.dataset.id;
-        const gal = GALLERY[id];
-        if (!gal) return;
-        const main = wrap.querySelector('.main');
-        const currentIndex = gal.findIndex(src => main.src.includes(src));
-        const dir = e.target.classList.contains('prev') ? -1 : 1;
-        const nextIndex = (currentIndex + dir + gal.length) % gal.length;
-        main.src = gal[nextIndex];
-        const thumbs = wrap.querySelectorAll('.thumbs img');
-        thumbs.forEach((t,i)=> t.classList.toggle('active', i===nextIndex));
-      }
+      });
     });
 
-    /* Size selection */
-    document.addEventListener('click', (e) => {
-      const btn = e.target.closest('.pill');
-      if(!btn) return;
-      const wrapper = btn.closest('.variant');
-      wrapper.querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
-      btn.classList.add('active');
-    });
-
-    /* Cart state */
+    // ------- Panier (localStorage)
     const CART_KEY = 'fh_cart_v1';
     const loadCart = () => JSON.parse(localStorage.getItem(CART_KEY) || '[]');
     const saveCart = (c) => localStorage.setItem(CART_KEY, JSON.stringify(c));
@@ -368,12 +411,10 @@
     const cartItems = document.getElementById('cartItems');
     const cartTotal = document.getElementById('cartTotal');
     const drawer = document.getElementById('drawer');
-
     const updateBadge = () => {
       const cart = loadCart();
       cartCount.textContent = cart.reduce((a,i) => a + i.qty, 0);
     };
-
     const renderCart = () => {
       const cart = loadCart();
       cartItems.innerHTML = '';
@@ -403,26 +444,10 @@
       cartTotal.textContent = formatPrice(total);
       updateBadge();
     };
-
-    /* Add to cart */
-    document.addEventListener('click', (e) => {
-      const add = e.target.closest('.add-btn');
-      if(!add) return;
-      const id = add.dataset.id;
-      const variant = document.querySelector(`.variant[data-id="${id}"]`);
-      const active = variant.querySelector('.pill.active');
-      if(!active) { alert('Choisis une taille avant d’ajouter au panier.'); return; }
-      const size = active.dataset.size;
-      const cart = loadCart();
-      const existing = cart.find(i => i.id === id && i.size === size);
-      if(existing) existing.qty += 1;
-      else cart.push({ id, size, qty: 1 });
-      saveCart(cart);
-      renderCart();
-      openDrawer();
-    });
-
-    /* Qty buttons in cart */
+    const openDrawer = () => drawer.classList.add('open');
+    const closeDrawer = () => drawer.classList.remove('open');
+    document.getElementById('openCart').addEventListener('click', () => { renderCart(); openDrawer(); });
+    document.getElementById('closeCart').addEventListener('click', closeDrawer);
     cartItems.addEventListener('click', (e) => {
       if(e.target.tagName !== 'BUTTON') return;
       const id = e.target.dataset.id;
@@ -433,130 +458,136 @@
       if(idx === -1) return;
       if(action === 'inc') cart[idx].qty += 1;
       if(action === 'dec') { cart[idx].qty -= 1; if(cart[idx].qty <= 0) cart.splice(idx,1); }
-      saveCart(cart);
-      renderCart();
+      saveCart(cart); renderCart();
     });
-
-    /* Drawer open/close */
-    const openCart = document.getElementById('openCart');
-    const closeCart = document.getElementById('closeCart');
-    const openDrawer = () => drawer.classList.add('open');
-    const closeDrawer = () => drawer.classList.remove('open');
-    openCart.addEventListener('click', () => { renderCart(); openDrawer(); });
-    closeCart.addEventListener('click', closeDrawer);
     updateBadge();
 
-    /* Checkout (Netlify Function / Stripe) */
+    // ------- Ajout au panier depuis la grille
+    document.querySelectorAll('.add-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation(); // évite d’ouvrir la modal si on clique le bouton
+        const id = btn.dataset.id;
+        const variant = document.querySelector(`.variant[data-id="${id}"]`);
+        const active = variant.querySelector('.pill.active');
+        if(!active) { alert('Choisis une taille avant d’ajouter au panier.'); return; }
+        const size = active.dataset.size;
+        const cart = loadCart();
+        const existing = cart.find(i => i.id === id && i.size === size);
+        if(existing) existing.qty += 1; else cart.push({ id, size, qty: 1 });
+        saveCart(cart); renderCart(); openDrawer();
+      });
+    });
+
+    // ------- MODAL PRODUIT (ouverture en cliquant la carte)
+    const overlay = document.getElementById('overlay');
+    const modalClose = document.getElementById('modalClose');
+    const modalMain = document.getElementById('modalMain');
+    const modalThumbs = document.getElementById('modalThumbs');
+    const modalName = document.getElementById('modalName');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalMeta = document.getElementById('modalMeta');
+    const modalSizes = document.getElementById('modalSizes');
+    const modalRating = document.getElementById('modalRating');
+    const modalReviews = document.getElementById('modalReviews');
+    const modalAdd = document.getElementById('modalAdd');
+    const modalBuy = document.getElementById('modalBuy');
+    let currentId = null, currentSize = null;
+
+    function renderStars(note){
+      const full = Math.round(note);
+      return Array.from({length:5}, (_,i)=>`<span class="star">${i<full?"⭐":"☆"}</span>`).join("") + `<span class="muted">(${note.toFixed(1)})</span>`;
+    }
+
+    function openProduct(id){
+      const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
+      currentId = id; currentSize = p.sizes[0];
+
+      // header
+      modalName.textContent = p.title;
+      modalPrice.textContent = formatPrice(p.price);
+      modalMeta.textContent = `${p.category} • ${p.gender}`;
+      modalDesc.textContent = p.description || '';
+      modalRating.innerHTML = renderStars(p.rating || 4.6);
+
+      // images
+      const imgs = p.images?.length ? p.images : [p.image];
+      modalMain.src = imgs[0];
+      modalMain.alt = p.title;
+      modalThumbs.innerHTML = imgs.slice(0,4).map(src=>`<img src="${src}" alt="">`).join('');
+      modalThumbs.querySelectorAll('img').forEach(img=>{
+        img.addEventListener('click',()=>{ modalMain.src = img.src; });
+      });
+      modalMain.onclick = () => window.open(modalMain.src, '_blank');
+
+      // tailles
+      modalSizes.innerHTML = p.sizes.map(s=>`<button class="pill ${s===currentSize?'active':''}" data-size="${s}">${s}</button>`).join('');
+      modalSizes.onclick = (e)=>{
+        if(e.target.classList.contains('pill')){
+          modalSizes.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));
+          e.target.classList.add('active'); currentSize = e.target.dataset.size;
+        }
+      };
+
+      // avis
+      modalReviews.innerHTML = '<strong style="display:block;margin-bottom:8px">Avis</strong>' + 
+        (p.reviews?.length ? p.reviews.map(r => `
+          <div class="review">
+            <div class="avatar"></div>
+            <div><strong>${r.author}</strong><p>${r.text}</p></div>
+          </div>
+        `).join('') : `<div class="muted">Pas encore d’avis.</div>`);
+
+      // actions
+      modalAdd.onclick = ()=>{ addToCart(p.id, currentSize); };
+      modalBuy.onclick = ()=>{ addToCart(p.id, currentSize); openDrawer(); };
+
+      overlay.classList.add('show');
+      overlay.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
+    }
+
+    function closeProduct(){
+      overlay.classList.remove('show');
+      overlay.setAttribute('aria-hidden','true');
+      document.body.style.overflow='';
+      currentId = null; currentSize = null;
+    }
+
+    function addToCart(id, size){
+      if(!size){ alert('Choisis une taille.'); return; }
+      const cart = loadCart();
+      const existing = cart.find(i => i.id === id && i.size === size);
+      if(existing) existing.qty += 1; else cart.push({ id, size, qty: 1 });
+      saveCart(cart); renderCart();
+    }
+
+    modalClose.addEventListener('click', closeProduct);
+    overlay.addEventListener('click', (e)=>{ if(e.target === overlay) closeProduct(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && overlay.classList.contains('show')) closeProduct(); });
+
+    // ouvrir en cliquant n’importe quelle carte (sauf le bouton d’ajout)
+    document.querySelectorAll('.card').forEach(card=>{
+      card.addEventListener('click', (e)=>{
+        if(e.target.classList.contains('add-btn')) return;
+        openProduct(card.dataset.open);
+      });
+    });
+
+    // ------- Checkout (placeholder)
     const checkoutBtn = document.getElementById('checkoutBtn');
     const errorEl = document.getElementById('error');
     const successEl = document.getElementById('success');
-
     checkoutBtn.addEventListener('click', async () => {
       errorEl.textContent = '';
       successEl.textContent = '';
       const cart = loadCart();
       if(cart.length === 0) { errorEl.textContent = 'Ton panier est vide.'; return; }
-
-      const line_items = cart.map(item => {
-        const p = PRODUCTS.find(x => x.id === item.id);
-        return { price: p.priceId, quantity: item.qty };
-      });
-
-      try {
-        const res = await fetch('/.netlify/functions/create-checkout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ line_items })
-        });
-        if(!res.ok) throw new Error('Erreur réseau');
-        const data = await res.json();
-        if(data.url) window.location.href = data.url;
-        else if(data.error) errorEl.textContent = data.error;
-        else errorEl.textContent = 'Réponse inattendue du serveur.';
-      } catch (err) {
-        errorEl.textContent = 'Paiement non configuré. Suis le README pour activer Stripe.';
-      }
+      errorEl.textContent = 'Paiement non configuré sur GitHub Pages (Stripe nécessite un backend).';
     });
 
-    /* Lightbox logic */
-    const lightbox = document.getElementById('lightbox');
-    const lbMain = document.getElementById('lbMain');
-    const lbThumbs = document.getElementById('lbThumbs');
-    const lbClose = document.getElementById('lbClose');
-    const lbPrev = document.getElementById('lbPrev');
-    const lbNext = document.getElementById('lbNext');
-
-    let lbImages = [];
-    let lbIndex = 0;
-
-    function openLightbox(images, startIndex=0){
-      lbImages = images;
-      lbIndex = startIndex;
-      renderLightbox();
-      lightbox.classList.add('open');
-    }
-    function closeLightbox(){ lightbox.classList.remove('open'); }
-    function renderLightbox(){
-      if(!lbImages.length) return;
-      lbMain.src = lbImages[lbIndex];
-      lbThumbs.innerHTML = '';
-      lbImages.forEach((src, i) => {
-        const img = new Image();
-        img.src = src; img.alt = "Miniature";
-        if(i === lbIndex) img.classList.add('active');
-        img.addEventListener('click', () => { lbIndex = i; renderLightbox(); });
-        lbThumbs.appendChild(img);
-      });
-    }
-    lbClose.addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
-    document.addEventListener('keydown', (e) => {
-      if(!lightbox.classList.contains('open')) return;
-      if(e.key === 'Escape') closeLightbox();
-      if(e.key === 'ArrowLeft') { lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; renderLightbox(); }
-      if(e.key === 'ArrowRight'){ lbIndex = (lbIndex + 1) % lbImages.length; renderLightbox(); }
-    });
-    lbPrev.addEventListener('click', ()=>{ lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; renderLightbox(); });
-    lbNext.addEventListener('click', ()=>{ lbIndex = (lbIndex + 1) % lbImages.length; renderLightbox(); });
-
-    // Ouvrir la lightbox au clic sur l'image principale d'une carte
-    document.addEventListener('click', (e) => {
-      const img = e.target.closest('.product-img');
-      if(!img) return;
-      const id = img.dataset.id;
-      const gallery = GALLERY[id];
-      if(gallery && gallery.length){ openLightbox(gallery, 0); }
-      else { openLightbox([img.src], 0); }
-    });
-
-    /* Reveal on scroll */
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => e.isIntersecting && e.target.classList.add('show'));
-    }, { threshold: .16 });
-    document.querySelectorAll('.reveal').forEach(n => io.observe(n));
-
-    /* Year */
+    // année footer
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
-
-  <!-- ==== PAGES LÉGALES ==== -->
-  <section id="legal-mentions">
-    <div class="container">
-      <h2 class="section-title">Mentions légales</h2>
-      <p class="section-sub">Éditeur : Fashionhabits — Email : hello@fashionhabits.fr — Siège : À compléter. Numéro SIREN/SIRET : À compléter.</p>
-    </div>
-  </section>
-  <section id="legal-privacy">
-    <div class="container">
-      <h2 class="section-title">Politique de confidentialité</h2>
-      <p class="section-sub">Nous collectons uniquement les données nécessaires au traitement des commandes (nom, adresse, email). Vos données ne sont jamais revendues. Vous pouvez demander leur suppression à tout moment.</p>
-    </div>
-  </section>
-  <section id="legal-returns">
-    <div class="container">
-      <h2 class="section-title">Retours & Remboursements</h2>
-      <p class="section-sub">Vous disposez de 14 jours après réception pour retourner un article non porté avec étiquettes. Remboursement sous 7 jours après réception et contrôle.</p>
-    </div>
-  </section>
 </body>
 </html>
