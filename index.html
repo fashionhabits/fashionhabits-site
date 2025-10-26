@@ -10,19 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0a0a0b;
-      --panel:#121214;
-      --text:#f3f4f6;
-      --muted:#a3a3a3;
-      --accent-start:#7c3aed; /* violet */
-      --accent-end:#22d3ee;   /* cyan */
-      --success:#10b981;
-      --danger:#ef4444;
-      --shadow:0 10px 30px rgba(0,0,0,.3);
-      --radius:18px;
+      --bg:#0a0a0b; --panel:#121214; --text:#f3f4f6; --muted:#a3a3a3;
+      --accent-start:#7c3aed; --accent-end:#22d3ee;
+      --success:#10b981; --danger:#ef4444;
+      --shadow:0 10px 30px rgba(0,0,0,.3); --radius:18px;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji";line-height:1.5}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial}
     a{color:inherit;text-decoration:none}
     img{display:block;max-width:100%}
 
@@ -57,15 +51,10 @@
 
     /* Products grid */
     .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;cursor:pointer;transition:.25s}
+    .card:hover{transform:translateY(-2px)}
     .card .media{position:relative}
-    .card img.main{aspect-ratio:4/5;object-fit:cover;border-bottom:1px solid rgba(255,255,255,.06);cursor:zoom-in}
-    .thumbs{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,.06);overflow:auto}
-    .thumbs img{width:56px;height:70px;object-fit:cover;border-radius:10px;border:2px solid transparent;opacity:.85;cursor:pointer;flex:0 0 auto}
-    .thumbs img.active{border-color:var(--accent-end);opacity:1}
-    .nav-arrows{position:absolute;inset:auto 0 0 0;display:flex;justify-content:space-between;padding:10px}
-    .nav-arrows button{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:10px;padding:6px 10px;cursor:pointer}
-
+    .card img.main{aspect-ratio:4/5;object-fit:cover;border-bottom:1px solid rgba(255,255,255,.06)}
     .card-body{padding:14px}
     .meta{display:flex;justify-content:space-between;align-items:center;margin-top:6px;color:var(--muted)}
     .price{font-weight:800}
@@ -117,29 +106,18 @@
     .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
     .reveal.show{opacity:1;transform:none}
 
-    /* --- Lightbox général (autres produits) --- */
-    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:200}
-    .lightbox.open{display:flex}
-    .lb-panel{width:min(980px,96vw);background:#0f1012;border:1px solid rgba(255,255,255,.08);border-radius:18px;box-shadow:var(--shadow);padding:16px}
-    .lb-main{aspect-ratio:4/5;max-height:70vh;background:#0b0c0e;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center}
-    .lb-main img{max-width:100%;max-height:100%;object-fit:contain}
-    .lb-thumbs{display:flex;gap:10px;margin-top:12px;overflow:auto}
-    .lb-thumbs img{width:84px;height:100px;object-fit:cover;border-radius:10px;border:2px solid transparent;cursor:pointer;opacity:.85}
-    .lb-thumbs img.active{border-color:var(--accent-end);opacity:1}
-    .lb-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-    .lb-actions button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;border-radius:10px;padding:8px 12px;cursor:pointer}
-    .lb-close{background:transparent;border:none;color:#fff;font-size:22px;cursor:pointer}
-
-    /* --- FICHE PRODUIT intégrée (Veste Polaire) --- */
-    #productPage{display:none;padding:40px 0;border-top:1px solid rgba(255,255,255,.06)}
+    /* ====== FICHE PRODUIT intégrée (Veste Polaire) + fondu ====== */
+    #productPage{display:none;opacity:0;transition:opacity .35s ease}
+    #productPage.show{display:block;opacity:1}
+    #shop.fadeOut{opacity:0;transition:opacity .35s ease}
+    #shop.fadeIn{opacity:1;transition:opacity .35s ease}
     .product-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:26px}
-    .pd-gallery{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:14px}
+    .pd-gallery,.pd-details{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px}
     .pd-big{aspect-ratio:4/5;background:#0d0e10;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden}
     .pd-big img{max-height:100%;object-fit:contain}
     .pd-thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
     .pd-thumbs img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:10px;border:2px solid transparent;cursor:pointer}
     .pd-thumbs img.active{border-color:var(--accent-end)}
-    .pd-details{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px}
     .pd-title{font-size:1.6rem;font-weight:800;margin:0}
     .pd-price{font-size:1.35rem;font-weight:800;margin-top:6px}
     .pd-rating{display:flex;align-items:center;gap:8px;margin-top:6px}
@@ -161,7 +139,6 @@
     .show button{background:none;border:1px solid rgba(255,255,255,.1);color:#fff;padding:8px 14px;border-radius:8px;cursor:pointer}
     .add-review{margin-top:18px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1)}
     .add-review input,.add-review textarea,.add-review select{width:100%;margin-top:6px;margin-bottom:10px;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff}
-
     @media (max-width:980px){.product-grid{grid-template-columns:1fr}}
   </style>
 </head>
@@ -204,15 +181,16 @@
     </div>
   </main>
 
+  <!-- ====== Boutique (1 produit) ====== -->
   <section id="shop">
     <div class="container">
       <h2 class="section-title">Boutique</h2>
-      <p class="section-sub">Sélection de départ — tu peux ajouter/retirer des articles facilement.</p>
+      <p class="section-sub">Sélection de départ — on ajoutera d’autres articles ensuite.</p>
       <div class="grid" id="productGrid"></div>
     </div>
   </section>
 
-  <!-- ===== FICHE PRODUIT intégrée (affichée quand on clique Veste Polaire) ===== -->
+  <!-- ====== FICHE PRODUIT intégrée ====== -->
   <section id="productPage">
     <div class="container">
       <button class="btn back-btn" id="backToShop">⬅ Retour à la boutique</button>
@@ -260,6 +238,7 @@
     </div>
   </section>
 
+  <!-- ====== À propos / Contact / Footer ====== -->
   <section id="about">
     <div class="container">
       <h2 class="section-title">À propos de Fashionhabits</h2>
@@ -295,99 +274,27 @@
     <footer>
       <div class="summary"><span>Total</span><strong id="cartTotal">0,00 €</strong></div>
       <button class="checkout" id="checkoutBtn">Payer maintenant</button>
-      <div class="note-ck">Paiement sécurisé via Stripe. (À activer dans <code>create-checkout.js</code>)</div>
+      <div class="note-ck">Paiement sécurisé via Stripe. (À activer côté serveur)</div>
       <div class="error" id="error"></div>
       <div class="success" id="success"></div>
     </footer>
   </aside>
 
-  <!-- === LIGHTBOX (pour les autres produits de la grille) === -->
-  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
-    <div class="lb-panel">
-      <div class="lb-actions">
-        <button class="lb-close" id="lbClose" aria-label="Fermer">✕</button>
-        <div class="muted">Galerie produit</div>
-        <div>
-          <button id="lbPrev" aria-label="Précédent">◀</button>
-          <button id="lbNext" aria-label="Suivant">▶</button>
-        </div>
-      </div>
-      <div class="lb-main"><img id="lbMain" alt="Aperçu produit"></div>
-      <div class="lb-thumbs" id="lbThumbs"></div>
-    </div>
-  </div>
-
   <script>
-    /* =================== PRODUITS =================== */
+    /* ========= Données ========= */
     const PRODUCTS = [
       {
         id:"veste-polaire",
         title:"Veste Polaire",
         price:39.99, category:"Vêtements", gender:"Unisexe",
         sizes:["XS","S","M","L","XL"],
-        image:"assets/veste-polaire-5.png", /* couverture = 5.png (images inversées) */
+        image:"assets/veste-polaire-5.png", // couverture = 5.png (photos inversées)
         priceId:"price_xxx_VESTE_POLAIRE",
-        description:"Veste polaire bicolore, col montant, poches pratiques. Chaude et confortable."
-      },
-      {
-        id:"tee-minimal-white",
-        title:"T-shirt Minimal Blanc",
-        price:29.9, category:"Vêtements", gender:"Unisexe",
-        sizes:["XS","S","M","L","XL"],
-        image:"https://images.unsplash.com/photo-1520975922284-5f5730d0f9b5?q=80&w=1200&auto=format&fit=crop",
-        priceId:"price_xxx_TSHIRT_WHITE",
-        description:"T-shirt soft premium, coupe droite."
-      },
-      {
-        id:"hoodie-black-street",
-        title:"Hoodie Noir Street",
-        price:54.9, category:"Vêtements", gender:"Unisexe",
-        sizes:["S","M","L","XL"],
-        image:"https://images.unsplash.com/photo-1520975867597-0f4a5f1f9f9e?q=80&w=1200&auto=format&fit=crop",
-        priceId:"price_xxx_HOODIE_BLACK",
-        description:"Sweat capuche molletonné, silhouette moderne."
-      },
-      {
-        id:"cargo-olive",
-        title:"Pantalon Cargo Olive",
-        price:49.9, category:"Vêtements", gender:"Homme",
-        sizes:["S","M","L","XL"],
-        image:"https://images.unsplash.com/photo-1516826957135-700dedea698c?q=80&w=1200&auto=format&fit=crop",
-        priceId:"price_xxx_CARGO_OLIVE",
-        description:"Cargo polyvalent, poches utilitaires."
-      },
-      {
-        id:"dress-satin-black",
-        title:"Robe Satin Noire",
-        price:59.9, category:"Vêtements", gender:"Femme",
-        sizes:["XS","S","M","L"],
-        image:"https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop",
-        priceId:"price_xxx_DRESS_BLACK",
-        description:"Satin fluide, tombé élégant."
-      },
-      {
-        id:"sneakers-white-minimal",
-        title:"Sneakers Blanches Minimal",
-        price:69.9, category:"Chaussures", gender:"Unisexe",
-        sizes:["36","37","38","39","40","41","42","43","44"],
-        image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop",
-        priceId:"price_xxx_SNEAKERS_WHITE",
-        description:"Baskets blanches épurées, semelle confort."
-      },
-      {
-        id:"sneakers-chunky-black",
-        title:"Sneakers Chunky Noires",
-        price:79.9, category:"Chaussures", gender:"Unisexe",
-        sizes:["36","37","38","39","40","41","42","43","44"],
-        image:"https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=1200&auto=format&fit=crop",
-        priceId:"price_xxx_SNEAKERS_CHUNKY",
-        description:"Chunky street, amorti renforcé."
+        description:"Veste polaire bicolore, col montant, poches pratiques. Chaude et confortable pour l’automne/hiver."
       }
     ];
-
-    /* --- Galerie dédiée par produit (seulement Veste Polaire pour l’instant) --- */
     const GALLERY = {
-      "veste-polaire": [
+      "veste-polaire":[
         "assets/veste-polaire-5.png",
         "assets/veste-polaire-4.png",
         "assets/veste-polaire-3.png",
@@ -396,44 +303,20 @@
       ]
     };
 
-    /* Utils */
+    /* ========= Utils ========= */
     const formatPrice = (n) => new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR' }).format(n);
-    const el = (html) => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
+    const el = (html) => { const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstElementChild; };
 
-    /* Render products (boutique) */
+    /* ========= Boutique (rendu) ========= */
     const grid = document.getElementById('productGrid');
-    PRODUCTS.forEach(p => {
-      const sizes = p.sizes.map(s => `<button class="pill" data-size="${s}">${s}</button>`).join('');
-      const gallery = GALLERY[p.id];
-      let galleryBlock = '';
-      if (gallery && gallery.length) {
-        const first = gallery[0];
-        const thumbs = gallery.map((src,i)=>`<img src="${src}" data-index="${i}" class="${i===0?'active':''}" alt="miniature ${i+1}">`).join('');
-        galleryBlock = `
-          <div class="media" data-id="${p.id}">
-            <img src="${first}" alt="${p.title}" class="main product-img" data-id="${p.id}">
-            <div class="nav-arrows">
-              <button class="prev" data-id="${p.id}">◀</button>
-              <button class="next" data-id="${p.id}">▶</button>
-            </div>
-            <div class="thumbs" data-id="${p.id}">
-              ${thumbs}
-            </div>
-          </div>
-        `;
-      } else {
-        galleryBlock = `
-          <div class="media" data-id="${p.id}">
-            <img src="${p.image}" alt="${p.title}" class="main product-img" data-id="${p.id}">
-          </div>
-        `;
-      }
-
-      const ratingNote = (p.id === 'veste-polaire') ? `<div class="note">⭐ 4.9/5 <span class="muted">(51 avis)</span></div>` : '';
-
+    PRODUCTS.forEach(p=>{
+      const sizes = p.sizes.map(s=>`<button class="pill" data-size="${s}">${s}</button>`).join('');
+      const ratingNote = `<div class="note">⭐ 4.9/5 <span class="muted">(51 avis)</span></div>`;
       const card = el(`
-        <article class="card reveal" title="${p.description || ''}">
-          ${galleryBlock}
+        <article class="card reveal" title="${p.description}">
+          <div class="media">
+            <img src="${p.image}" alt="${p.title}" class="main" data-id="${p.id}">
+          </div>
           <div class="card-body">
             <h3 style="margin:0;font-size:1.05rem" class="title-link" data-id="${p.id}">${p.title}</h3>
             <div class="meta">
@@ -448,91 +331,32 @@
           </div>
         </article>
       `);
+      // clic image ou titre => fiche produit
+      card.querySelector('.main').addEventListener('click',()=>openProductSheet());
+      card.querySelector('.title-link').addEventListener('click',()=>openProductSheet());
       grid.appendChild(card);
     });
 
-    /* Thumbs + nav (dans la carte) */
-    document.addEventListener('click', (e) => {
-      // thumbs
-      const thumb = e.target.closest('.thumbs img');
-      if (thumb) {
-        const wrap = thumb.closest('.media');
-        const id = wrap.dataset.id;
-        const index = Number(thumb.dataset.index);
-        const main = wrap.querySelector('.main');
-        const gal = GALLERY[id];
-        if (gal && gal[index]) {
-          main.src = gal[index];
-          wrap.querySelectorAll('.thumbs img').forEach(img => img.classList.remove('active'));
-          thumb.classList.add('active');
-        }
-      }
-      // arrows
-      if (e.target.classList.contains('prev') || e.target.classList.contains('next')) {
-        const wrap = e.target.closest('.media');
-        const id = wrap.dataset.id;
-        const gal = GALLERY[id];
-        if (!gal) return;
-        const main = wrap.querySelector('.main');
-        const currentIndex = gal.findIndex(src => main.src.includes(src));
-        const dir = e.target.classList.contains('prev') ? -1 : 1;
-        const nextIndex = (currentIndex + dir + gal.length) % gal.length;
-        main.src = gal[nextIndex];
-        const thumbs = wrap.querySelectorAll('.thumbs img');
-        thumbs.forEach((t,i)=> t.classList.toggle('active', i===nextIndex));
-      }
-    });
-
-    /* Ouvrir FICHE PRODUIT au clic sur Veste Polaire (image ou titre) */
-    const shopSection = document.getElementById('shop');
-    const productPage = document.getElementById('productPage');
-    document.addEventListener('click', (e) => {
-      const img = e.target.closest('.product-img');
-      const title = e.target.closest('.title-link');
-      const id = (img && img.dataset.id) || (title && title.dataset.id);
-      if (!id) return;
-
-      // Si c’est Veste Polaire → ouvre FICHE PRODUIT au lieu de la lightbox
-      if (id === 'veste-polaire') {
-        e.preventDefault();
-        openProductSheet();
-      } else if (img) {
-        // autres produits → lightbox
-        const gallery = GALLERY[id];
-        if (gallery && gallery.length){ openLightbox(gallery, 0); }
-        else { openLightbox([img.src], 0); }
-      }
-    });
-
-    /* Sélection de taille (dans la grille) */
-    document.addEventListener('click', (e) => {
-      const btn = e.target.closest('.pill');
-      if(!btn) return;
-      const wrapper = btn.closest('.variant');
-      wrapper.querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
+    /* ========= Sélection de taille (grille) ========= */
+    document.addEventListener('click',(e)=>{
+      const btn=e.target.closest('.pill'); if(!btn) return;
+      const wrap=btn.closest('.variant'); wrap.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
       btn.classList.add('active');
     });
 
-    /* Panier (commun) */
-    const CART_KEY = 'fh_cart_v1';
-    const loadCart = () => JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-    const saveCart = (c) => localStorage.setItem(CART_KEY, JSON.stringify(c));
-    const cartCount = document.getElementById('cartCount');
-    const cartItems = document.getElementById('cartItems');
-    const cartTotal = document.getElementById('cartTotal');
-    const drawer = document.getElementById('drawer');
-    const updateBadge = () => { cartCount.textContent = loadCart().reduce((a,i) => a + i.qty, 0); };
+    /* ========= Panier ========= */
+    const CART_KEY='fh_cart_v1';
+    const loadCart=()=>JSON.parse(localStorage.getItem(CART_KEY)||'[]');
+    const saveCart=(c)=>localStorage.setItem(CART_KEY,JSON.stringify(c));
+    const cartCount=document.getElementById('cartCount'), cartItems=document.getElementById('cartItems'), cartTotal=document.getElementById('cartTotal'); const drawer=document.getElementById('drawer');
+    const updateBadge=()=>{ cartCount.textContent = loadCart().reduce((a,i)=>a+i.qty,0); };
 
-    const renderCart = () => {
-      const cart = loadCart();
-      cartItems.innerHTML = '';
-      let total = 0;
-      cart.forEach(item => {
-        const p = PRODUCTS.find(x => x.id === item.id);
-        if(!p) return;
-        const line = p.price * item.qty;
-        total += line;
-        const node = el(`
+    const renderCart=()=>{
+      const cart=loadCart(); cartItems.innerHTML=''; let total=0;
+      cart.forEach(item=>{
+        const p=PRODUCTS.find(x=>x.id===item.id); if(!p) return;
+        total+=p.price*item.qty;
+        cartItems.appendChild(el(`
           <div class="item">
             <img src="${p.image}" alt="${p.title}">
             <div>
@@ -546,160 +370,98 @@
               <button data-action="inc" data-id="${item.id}" data-size="${item.size}">+</button>
             </div>
           </div>
-        `);
-        cartItems.appendChild(node);
+        `));
       });
-      cartTotal.textContent = formatPrice(total);
-      updateBadge();
+      cartTotal.textContent = formatPrice(total); updateBadge();
     };
 
-    /* Ajouter au panier (grille) */
-    document.addEventListener('click', (e) => {
-      const add = e.target.closest('.add-btn');
-      if(!add) return;
-      const id = add.dataset.id;
-      const variant = document.querySelector(`.variant[data-id="${id}"]`);
-      const active = variant.querySelector('.pill.active');
-      if(!active) { alert('Choisis une taille avant d’ajouter au panier.'); return; }
-      const size = active.dataset.size;
-      const cart = loadCart();
-      const existing = cart.find(i => i.id === id && i.size === size);
-      if(existing) existing.qty += 1; else cart.push({ id, size, qty: 1 });
-      saveCart(cart); renderCart(); openDrawer();
+    document.addEventListener('click',(e)=>{
+      const add=e.target.closest('.add-btn'); if(!add) return;
+      const id=add.dataset.id; const v=document.querySelector(`.variant[data-id="${id}"]`); const a=v.querySelector('.pill.active');
+      if(!a){ alert('Choisis une taille avant d’ajouter au panier.'); return; }
+      const size=a.dataset.size; const cart=loadCart(); const ex=cart.find(i=>i.id===id&&i.size===size);
+      if(ex) ex.qty++; else cart.push({id,size,qty:1}); saveCart(cart); renderCart(); openDrawer();
     });
 
-    /* Qty dans le panier */
-    cartItems.addEventListener('click', (e) => {
-      if(e.target.tagName !== 'BUTTON') return;
-      const id = e.target.dataset.id, size = e.target.dataset.size, action = e.target.dataset.action;
-      const cart = loadCart(); const idx = cart.findIndex(i => i.id === id && i.size === size); if(idx === -1) return;
-      if(action === 'inc') cart[idx].qty += 1;
-      if(action === 'dec'){ cart[idx].qty -= 1; if(cart[idx].qty <= 0) cart.splice(idx,1); }
+    cartItems.addEventListener('click',(e)=>{
+      if(e.target.tagName!=='BUTTON') return;
+      const id=e.target.dataset.id, size=e.target.dataset.size, act=e.target.dataset.action;
+      const cart=loadCart(); const i=cart.findIndex(x=>x.id===id&&x.size===size); if(i===-1) return;
+      if(act==='inc') cart[i].qty++; if(act==='dec'){ cart[i].qty--; if(cart[i].qty<=0) cart.splice(i,1); }
       saveCart(cart); renderCart();
     });
 
-    /* Drawer open/close */
-    const openCart = document.getElementById('openCart');
-    const closeCart = document.getElementById('closeCart');
-    const openDrawer = () => drawer.classList.add('open');
-    const closeDrawer = () => drawer.classList.remove('open');
-    openCart.addEventListener('click', () => { renderCart(); openDrawer(); });
-    closeCart.addEventListener('click', closeDrawer);
+    const openCart=document.getElementById('openCart'); const closeCart=document.getElementById('closeCart');
+    const openDrawer=()=>drawer.classList.add('open'); const closeDrawer=()=>drawer.classList.remove('open');
+    openCart.addEventListener('click',()=>{ renderCart(); openDrawer(); }); closeCart.addEventListener('click',closeDrawer);
     updateBadge();
 
-    /* Checkout (placeholder) */
-    const checkoutBtn = document.getElementById('checkoutBtn');
-    const errorEl = document.getElementById('error'), successEl = document.getElementById('success');
-    checkoutBtn.addEventListener('click', async () => {
-      errorEl.textContent = ''; successEl.textContent = '';
-      const cart = loadCart(); if(cart.length === 0) { errorEl.textContent = 'Ton panier est vide.'; return; }
-      errorEl.textContent = "Paiement non configuré. Active Stripe (Netlify Function) pour continuer.";
+    document.getElementById('checkoutBtn').addEventListener('click',()=>{
+      const c=loadCart(); if(!c.length){ document.getElementById('error').textContent='Ton panier est vide.'; return; }
+      document.getElementById('error').textContent='Paiement non configuré (Stripe côté serveur à activer).';
     });
 
-    /* Lightbox pour autres produits (pas Veste Polaire) */
-    const lightbox = document.getElementById('lightbox');
-    const lbMain = document.getElementById('lbMain');
-    const lbThumbs = document.getElementById('lbThumbs');
-    const lbClose = document.getElementById('lbClose');
-    const lbPrev = document.getElementById('lbPrev');
-    const lbNext = document.getElementById('lbNext');
-    let lbImages = []; let lbIndex = 0;
+    /* ========= Fondu boutique <-> fiche ========= */
+    const shop=document.getElementById('shop'); const productPage=document.getElementById('productPage'); const backToShop=document.getElementById('backToShop');
 
-    function openLightbox(images, startIndex=0){
-      lbImages = images; lbIndex = startIndex; renderLightbox(); lightbox.classList.add('open');
-    }
-    function closeLightbox(){ lightbox.classList.remove('open'); }
-    function renderLightbox(){
-      if(!lbImages.length) return;
-      lbMain.src = lbImages[lbIndex]; lbThumbs.innerHTML = '';
-      lbImages.forEach((src, i) => {
-        const img = new Image(); img.src = src; if(i===lbIndex) img.classList.add('active');
-        img.onclick = () => { lbIndex = i; renderLightbox(); }; lbThumbs.appendChild(img);
-      });
-    }
-    lbClose.addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
-    lbPrev.addEventListener('click', ()=>{ lbIndex=(lbIndex-1+lbImages.length)%lbImages.length; renderLightbox(); });
-    lbNext.addEventListener('click', ()=>{ lbIndex=(lbIndex+1)%lbImages.length; renderLightbox(); });
-    document.addEventListener('keydown', (e) => {
-      if(!lightbox.classList.contains('open')) return;
-      if(e.key === 'Escape') closeLightbox();
-      if(e.key === 'ArrowLeft') { lbIndex=(lbIndex-1+lbImages.length)%lbImages.length; renderLightbox(); }
-      if(e.key === 'ArrowRight'){ lbIndex=(lbIndex+1)%lbImages.length; renderLightbox(); }
-    });
-
-    /* Reveal on scroll */
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => e.isIntersecting && e.target.classList.add('show'));
-    }, { threshold: .16 });
-    document.querySelectorAll('.reveal').forEach(n => io.observe(n));
-
-    /* ======= FICHE PRODUIT (Veste Polaire) ======= */
-    const PD_IMAGES = GALLERY["veste-polaire"];
-    const pdBig = document.getElementById('pdBig');
-    const pdThumbs = document.getElementById('pdThumbs');
-    const pdSizes = document.getElementById('pdSizes');
-    const pdAdd = document.getElementById('pdAdd');
-    const pdBuy = document.getElementById('pdBuy');
-    const backToShop = document.getElementById('backToShop');
+    function fadeOut(el, after){ el.classList.remove('fadeIn'); el.classList.add('fadeOut'); setTimeout(()=>{ el.style.display='none'; el.classList.remove('fadeOut'); if(after) after(); }, 350); }
+    function fadeIn(el){ el.style.display='block'; requestAnimationFrame(()=>{ el.classList.add('show'); el.classList.add('fadeIn'); if(el.id==='productPage') productPage.classList.add('show'); }); }
 
     function openProductSheet(){
-      // Remplacer la boutique par la fiche
-      document.querySelector('#shop').style.display = 'none';
-      document.querySelector('#productPage').style.display = 'block';
-      window.scrollTo(0,0);
+      // boutique -> fondu out, puis fiche -> fondu in
+      shop.classList.remove('fadeIn'); shop.classList.add('fadeOut');
+      setTimeout(()=>{
+        shop.style.display='none'; shop.classList.remove('fadeOut');
+        productPage.classList.add('show'); // active opacity
+      }, 350);
+    }
 
+    backToShop.addEventListener('click',()=>{
+      productPage.classList.remove('show');
+      setTimeout(()=>{
+        productPage.style.display='none';
+        shop.style.display='block';
+        requestAnimationFrame(()=>{ shop.classList.add('fadeIn'); });
+      }, 350);
+      window.location.hash='#shop';
+    });
+
+    /* ========= Fiche produit : galerie / tailles / avis ========= */
+    const PD_IMAGES=GALLERY["veste-polaire"]; const pdBig=document.getElementById('pdBig'); const pdThumbs=document.getElementById('pdThumbs'); const pdSizes=document.getElementById('pdSizes');
+    // initialise quand on ouvre depuis la carte
+    function initProductPage(){
       // Galerie
-      pdBig.src = PD_IMAGES[0];
-      pdThumbs.innerHTML = '';
-      PD_IMAGES.forEach((src,i)=>{
-        const img = new Image(); img.src = src; if(i===0) img.classList.add('active');
-        img.onclick = ()=>{ pdBig.src = src; document.querySelectorAll('.pd-thumbs img').forEach(t=>t.classList.remove('active')); img.classList.add('active'); };
+      pdBig.src=PD_IMAGES[0]; pdThumbs.innerHTML='';
+      PD_IMAGES.forEach((src,i)=>{ const img=new Image(); img.src=src; if(i===0) img.classList.add('active');
+        img.onclick=()=>{ pdBig.src=src; document.querySelectorAll('.pd-thumbs img').forEach(t=>t.classList.remove('active')); img.classList.add('active'); };
         pdThumbs.appendChild(img);
       });
-
       // Tailles
-      pdSizes.innerHTML = '';
-      ["XS","S","M","L","XL"].forEach(s=>{
-        const b = document.createElement('button'); b.className='pd-pill'; b.textContent=s;
-        b.onclick = ()=>{ document.querySelectorAll('.pd-pill').forEach(x=>x.classList.remove('active')); b.classList.add('active'); };
+      pdSizes.innerHTML=''; ["XS","S","M","L","XL"].forEach(s=>{ const b=document.createElement('button'); b.className='pd-pill'; b.textContent=s;
+        b.onclick=()=>{ document.querySelectorAll('.pd-pill').forEach(x=>x.classList.remove('active')); b.classList.add('active'); };
         pdSizes.appendChild(b);
       });
-
-      // Avis
-      visible = 8;
-      renderReviews();
+      // Avis (reset visibilité)
+      visible=8; renderReviews();
+    }
+    // Ouvre et initialise
+    function openProductSheet(){ // (écrase la précédente pour inclure init)
+      shop.classList.remove('fadeIn'); shop.classList.add('fadeOut');
+      setTimeout(()=>{
+        shop.style.display='none'; shop.classList.remove('fadeOut');
+        initProductPage();
+        productPage.classList.add('show'); productPage.style.display='block';
+      },350);
     }
 
-    backToShop.onclick = ()=>{
-      document.querySelector('#productPage').style.display = 'none';
-      document.querySelector('#shop').style.display = 'block';
-      window.location.hash = '#shop';
-    };
+    function pdSelectedSize(){ const a=document.querySelector('.pd-pill.active'); return a?a.textContent:null; }
+    document.getElementById('pdAdd').onclick=()=>{ const s=pdSelectedSize(); if(!s) return alert('Choisis une taille.');
+      const cart=loadCart(); const id='veste-polaire'; const ex=cart.find(i=>i.id===id&&i.size===s); if(ex) ex.qty++; else cart.push({id,size:s,qty:1}); saveCart(cart); renderCart(); openDrawer(); };
+    document.getElementById('pdBuy').onclick=()=>{ document.getElementById('pdAdd').click(); };
 
-    // Ajouter au panier (fiche)
-    function pdGetSelectedSize(){
-      const active = document.querySelector('.pd-pill.active');
-      return active ? active.textContent : null;
-    }
-    pdAdd.onclick = ()=>{
-      const size = pdGetSelectedSize(); if(!size) return alert("Choisis une taille.");
-      const cart = loadCart(); const id='veste-polaire';
-      const ex = cart.find(i=>i.id===id && i.size===size);
-      if(ex) ex.qty++; else cart.push({id,size,qty:1});
-      saveCart(cart); renderCart(); openDrawer();
-    };
-    pdBuy.onclick = ()=>{
-      pdAdd.click();
-      // tu peux rediriger vers le paiement ici si activé
-    };
-
-    /* ======= AVIS (51 réalistes + ajout client localStorage) ======= */
-    const reviewsEl = document.getElementById('reviews');
-    const showMoreBtn = document.getElementById('showMore');
-    const REV_KEY = 'fh_reviews_vestePolaire';
-
-    const BASE_REVIEWS = [
+    /* ========= Avis (51) + ajout client (localStorage) ========= */
+    const REV_KEY='fh_reviews_vestePolaire';
+    const BASE_REVIEWS=[
       {n:"Léo M.",r:5,t:"Très chaude et confortable. Je la mets tous les jours pour aller en cours, rien à dire.",d:"12/10/2025"},
       {n:"Manon R.",r:5,t:"Reçue en 48h, taille S parfaite (1m64). La matière est super douce.",d:"11/10/2025"},
       {n:"Lucas V.",r:5,t:"Surpris par la qualité vu le prix. Col montant pratique.",d:"10/10/2025"},
@@ -752,21 +514,16 @@
       {n:"Quentin U.",r:5,t:"Je la porte tous les jours, nickel.",d:"24/08/2025"}
     ]; // 51 avis
 
-    function getLocalReviews(){
-      return JSON.parse(localStorage.getItem(REV_KEY) || '[]');
-    }
-    function saveLocalReviews(arr){
-      localStorage.setItem(REV_KEY, JSON.stringify(arr));
-    }
+    function getLocalReviews(){ return JSON.parse(localStorage.getItem(REV_KEY)||'[]'); }
+    function saveLocalReviews(a){ localStorage.setItem(REV_KEY, JSON.stringify(a)); }
 
-    let visible = 8;
+    const reviewsEl=document.getElementById('reviews'); let visible=8;
     function renderReviews(){
-      const all = [...getLocalReviews(), ...BASE_REVIEWS];
-      const target = document.getElementById('reviews');
-      target.innerHTML = '';
-      all.slice(0, visible).forEach(r=>{
-        const d = document.createElement('div'); d.className='review';
-        d.innerHTML = `
+      const all=[...getLocalReviews(),...BASE_REVIEWS];
+      reviewsEl.innerHTML='';
+      all.slice(0,visible).forEach(r=>{
+        const d=document.createElement('div'); d.className='review';
+        d.innerHTML=`
           <div class="head">
             <strong>${r.n}</strong>
             <div class="stars" title="${r.r}/5">${'⭐'.repeat(Math.round(r.r))}<span class="muted"> ${r.r}/5</span></div>
@@ -774,31 +531,24 @@
           <div class="txt">${r.t}</div>
           <small>${r.d} — Achat vérifié</small>
         `;
-        target.appendChild(d);
+        reviewsEl.appendChild(d);
       });
-      if(visible >= all.length) document.getElementById('showMore').style.display='none';
-      else document.getElementById('showMore').style.display='inline-block';
+      document.getElementById('showMore').style.display = visible>=all.length ? 'none' : 'inline-block';
     }
-
-    document.getElementById('showMore').onclick = ()=>{ visible += 8; renderReviews(); };
-
-    // Formulaire ajouter un avis (en local)
-    document.getElementById('submitReview').onclick = ()=>{
-      const name = document.getElementById('revName').value.trim() || 'Client';
-      const text = document.getElementById('revText').value.trim();
-      const rating = Number(document.getElementById('revRating').value) || 5;
-      if(!text){ alert("Merci d'écrire un commentaire."); return; }
-      const arr = getLocalReviews();
-      arr.unshift({ n:name, r:rating, t:text, d:new Date().toLocaleDateString('fr-FR') });
-      saveLocalReviews(arr);
-      document.getElementById('revText').value = '';
-      document.getElementById('thanks').style.display = 'block';
-      renderReviews();
+    document.getElementById('showMore').onclick=()=>{ visible+=8; renderReviews(); };
+    document.getElementById('submitReview').onclick=()=>{
+      const name=(document.getElementById('revName').value||'Client').trim();
+      const text=(document.getElementById('revText').value||'').trim();
+      const rating=Number(document.getElementById('revRating').value)||5;
+      if(!text) return alert("Merci d'écrire un commentaire.");
+      const arr=getLocalReviews(); arr.unshift({n:name,r:rating,t:text,d:new Date().toLocaleDateString('fr-FR')});
+      saveLocalReviews(arr); document.getElementById('revText').value=''; document.getElementById('thanks').style.display='block'; renderReviews();
     };
 
-    /* Year */
-    document.getElementById('year').textContent = new Date().getFullYear();
-
+    /* ========= Reveal + Year ========= */
+    const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.16});
+    document.querySelectorAll('.reveal').forEach(n=>io.observe(n));
+    document.getElementById('year').textContent=new Date().getFullYear();
   </script>
 
   <!-- ==== PAGES LÉGALES ==== -->
@@ -822,3 +572,4 @@
   </section>
 </body>
 </html>
+
