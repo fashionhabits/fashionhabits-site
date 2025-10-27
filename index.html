@@ -502,11 +502,13 @@
     qs('#lbNext').onclick=()=>{ lbIndex=(lbIndex+1)%lbImages.length; renderLB(); };
     document.addEventListener('keydown',e=>{ if(!lightbox.classList.contains('open')) return; if(e.key==='Escape') closeLB(); if(e.key==='ArrowLeft') qs('#lbPrev').click(); if(e.key==='ArrowRight') qs('#lbNext').click(); });
 
-    // Ouvrir LB depuis la carte
-    document.addEventListener('click', e=>{
-      const im=e.target.closest('.product-img'); if(!im) return;
-      openLB(GALLERY[im.dataset.id]||[im.src],0);
-    });
+ // Ouvrir directement la fiche produit quand on clique sur l'image de la carte
+document.addEventListener('click', e=>{
+  const im = e.target.closest('.product-img');
+  if(!im) return;
+  // on route vers la PDP
+  location.hash = '#p/veste-polaire';
+});
 
     /* ===== PDP (page produit) ===== */
     const pdp=qs('#pdp'), home=qs('#home'), shop=qs('#shop'), about=qs('#about'), contact=qs('#contact');
