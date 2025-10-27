@@ -4,19 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Fashionhabits — Streetwear & Chic</title>
-  <meta name="description" content="Fashionhabits : boutique streetwear & chic. Vêtements et chaussures unisexes. Qualité, style moderne, livraisons en France & Europe.">
+  <meta name="description" content="Fashionhabits : boutique streetwear & chic. Vêtements unisexes, qualité & style. Livraison rapide.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#0a0a0b; --panel:#121214; --text:#f3f4f6; --muted:#a3a3a3;
-      --accent-start:#7c3aed; --accent-end:#22d3ee;
-      --success:#10b981; --danger:#ef4444;
-      --shadow:0 10px 30px rgba(0,0,0,.3); --radius:18px;
+      --bg:#0a0a0b;
+      --panel:#121214;
+      --text:#f3f4f6;
+      --muted:#a3a3a3;
+      --accent-start:#7c3aed; /* violet */
+      --accent-end:#22d3ee;   /* cyan */
+      --success:#10b981;
+      --danger:#ef4444;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:18px;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial;line-height:1.5}
     a{color:inherit;text-decoration:none}
     img{display:block;max-width:100%}
 
@@ -31,7 +38,12 @@
     .menu a.active,.menu a:hover{color:var(--text)}
     .cart-btn{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent-start),var(--accent-end));border:none;color:white;padding:10px 14px;border-radius:14px;cursor:pointer;font-weight:700;box-shadow:var(--shadow)}
 
-    /* Hero */
+    /* Sections */
+    section{padding:56px 0;border-top:1px solid rgba(255,255,255,.06)}
+    h2.section-title{font-size:clamp(24px,4vw,36px);margin:0 0 18px 0}
+    p.section-sub{color:var(--muted);margin:0 0 24px 0}
+
+    /* ======= HERO ======= */
     .hero{position:relative;overflow:hidden}
     .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;padding:64px 0}
     .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.06);color:var(--muted);border:1px solid rgba(255,255,255,.08)}
@@ -41,24 +53,62 @@
     .btn{display:inline-block;padding:12px 18px;border-radius:14px;font-weight:700;border:1px solid rgba(255,255,255,.12)}
     .btn-primary{background:linear-gradient(135deg,var(--accent-start),var(--accent-end));border:none;color:white;box-shadow:var(--shadow)}
     .btn-ghost{color:var(--text)}
-    .hero-card{border-radius:var(--radius);overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow)}
-    .hero-card img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/5;filter:contrast(1.05)}
 
-    /* Sections */
-    section{padding:56px 0;border-top:1px solid rgba(255,255,255,.06)}
-    h2.section-title{font-size:clamp(24px,4vw,36px);margin:0 0 18px 0}
-    p.section-sub{color:var(--muted);margin:0 0 24px 0}
+    /* New showcase card (replaces the old "Look streetwear & chic") */
+    .showcase{
+      position:relative;
+      border-radius:var(--radius);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+      box-shadow:var(--shadow);
+      min-height:520px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      isolation:isolate;
+    }
+    .showcase .blob{
+      position:absolute;inset:-20% -10% auto auto;
+      width:120%;height:140%;
+      background:radial-gradient(600px 300px at 70% 10%, rgba(124,58,237,.35), transparent 60%),
+                 radial-gradient(500px 400px at 40% 80%, rgba(34,211,238,.28), transparent 60%);
+      filter:blur(24px);
+      z-index:0;pointer-events:none;
+    }
+    .showcase-img{
+      position:absolute;inset:0;
+      width:100%;height:100%;
+      object-fit:contain; /* on garde bien la veste entière */
+      padding:34px;
+      opacity:0;transition:opacity .7s ease;
+    }
+    .showcase-img.active{opacity:1}
+    .showcase .chips{
+      position:absolute;inset:16px 16px auto 16px;
+      display:flex;gap:10px;z-index:2;flex-wrap:wrap;
+    }
+    .chip{padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:.85rem}
+    .showcase .dots{
+      position:absolute;inset:auto 0 14px 0;display:flex;gap:10px;justify-content:center;z-index:2;
+    }
+    .dot{width:10px;height:10px;border-radius:999px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.15);cursor:pointer}
+    .dot.active{background:linear-gradient(135deg,var(--accent-start),var(--accent-end));border-color:transparent}
 
     /* Products grid */
     .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;cursor:pointer;transition:.25s}
-    .card:hover{transform:translateY(-2px)}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
     .card .media{position:relative}
-    .card img.main{aspect-ratio:4/5;object-fit:cover;border-bottom:1px solid rgba(255,255,255,.06)}
+    .card img.main{aspect-ratio:4/5;object-fit:cover;border-bottom:1px solid rgba(255,255,255,.06);cursor:zoom-in}
+    .thumbs{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,.06);overflow:auto}
+    .thumbs img{width:56px;height:70px;object-fit:cover;border-radius:10px;border:2px solid transparent;opacity:.85;cursor:pointer;flex:0 0 auto}
+    .thumbs img.active{border-color:var(--accent-end);opacity:1}
+    .nav-arrows{position:absolute;inset:auto 0 0 0;display:flex;justify-content:space-between;padding:10px}
+    .nav-arrows button{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:10px;padding:6px 10px;cursor:pointer}
+
     .card-body{padding:14px}
     .meta{display:flex;justify-content:space-between;align-items:center;margin-top:6px;color:var(--muted)}
     .price{font-weight:800}
-    .note{margin-top:6px;font-size:.92rem;color:#facc15;display:flex;align-items:center;gap:6px}
     .variant{margin:10px 0;display:flex;gap:8px;flex-wrap:wrap}
     .pill{padding:6px 10px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);cursor:pointer;font-size:.9rem}
     .pill.active{background:linear-gradient(135deg,var(--accent-start),var(--accent-end));color:white;border:none}
@@ -76,7 +126,7 @@
     .drawer footer{padding:16px;border-top:1px solid rgba(255,255,255,.08)}
     .summary{display:flex;justify-content:space-between;margin-bottom:12px}
     .checkout{width:100%;padding:12px 16px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--accent-start),var(--accent-end));color:white;font-weight:800;cursor:pointer}
-    .note-ck{color:var(--muted);font-size:.9rem;margin-top:8px}
+    .note{color:var(--muted);font-size:.9rem;margin-top:8px}
     .error{color:var(--danger);margin-top:8px}
     .success{color:var(--success);margin-top:8px}
 
@@ -96,50 +146,30 @@
       .hero .wrap{grid-template-columns:1fr;gap:20px}
       .grid{grid-template-columns:repeat(2,1fr)}
       .usp{grid-template-columns:1fr}
+      .showcase{min-height:440px}
     }
     @media (max-width: 640px){
       .menu{display:none}
       .grid{grid-template-columns:1fr}
+      .showcase{min-height:400px}
     }
 
     /* Reveal animations */
     .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
     .reveal.show{opacity:1;transform:none}
 
-    /* ====== FICHE PRODUIT intégrée (Veste Polaire) + fondu ====== */
-    #productPage{display:none;opacity:0;transition:opacity .35s ease}
-    #productPage.show{display:block;opacity:1}
-    #shop.fadeOut{opacity:0;transition:opacity .35s ease}
-    #shop.fadeIn{opacity:1;transition:opacity .35s ease}
-    .product-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:26px}
-    .pd-gallery,.pd-details{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px}
-    .pd-big{aspect-ratio:4/5;background:#0d0e10;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-    .pd-big img{max-height:100%;object-fit:contain}
-    .pd-thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
-    .pd-thumbs img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:10px;border:2px solid transparent;cursor:pointer}
-    .pd-thumbs img.active{border-color:var(--accent-end)}
-    .pd-title{font-size:1.6rem;font-weight:800;margin:0}
-    .pd-price{font-size:1.35rem;font-weight:800;margin-top:6px}
-    .pd-rating{display:flex;align-items:center;gap:8px;margin-top:6px}
-    .stars{color:#facc15}
-    .pd-desc{color:var(--muted);margin-top:10px}
-    .pd-sizes{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
-    .pd-pill{padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);cursor:pointer}
-    .pd-pill.active{background:linear-gradient(135deg,var(--accent-start),var(--accent-end));color:#fff;border:none}
-    .pd-actions{display:flex;gap:10px;margin-top:8px}
-    .btn{display:inline-block;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#fff;font-weight:700;cursor:pointer}
-    .btn.primary{background:linear-gradient(135deg,var(--accent-start),var(--accent-end));border:none}
-    .back-btn{margin-bottom:16px}
-    .reviews{margin-top:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px}
-    .review{border-bottom:1px dashed rgba(255,255,255,.1);padding:10px 0}
-    .review:last-child{border-bottom:none}
-    .review .head{display:flex;justify-content:space-between;align-items:center}
-    .review .txt{color:var(--muted);margin-top:6px}
-    .show{text-align:center;margin-top:10px}
-    .show button{background:none;border:1px solid rgba(255,255,255,.1);color:#fff;padding:8px 14px;border-radius:8px;cursor:pointer}
-    .add-review{margin-top:18px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1)}
-    .add-review input,.add-review textarea,.add-review select{width:100%;margin-top:6px;margin-bottom:10px;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff}
-    @media (max-width:980px){.product-grid{grid-template-columns:1fr}}
+    /* --- Lightbox --- */
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:200}
+    .lightbox.open{display:flex}
+    .lb-panel{width:min(980px,96vw);background:#0f1012;border:1px solid rgba(255,255,255,.08);border-radius:18px;box-shadow:var(--shadow);padding:16px}
+    .lb-main{aspect-ratio:4/5;max-height:70vh;background:#0b0c0e;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .lb-main img{max-width:100%;max-height:100%;object-fit:contain}
+    .lb-thumbs{display:flex;gap:10px;margin-top:12px;overflow:auto}
+    .lb-thumbs img{width:84px;height:100px;object-fit:cover;border-radius:10px;border:2px solid transparent;cursor:pointer;opacity:.85}
+    .lb-thumbs img.active{border-color:var(--accent-end);opacity:1}
+    .lb-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .lb-actions button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;border-radius:10px;padding:8px 12px;cursor:pointer}
+    .lb-close{background:transparent;border:none;color:#fff;font-size:22px;cursor:pointer}
   </style>
 </head>
 <body>
@@ -175,81 +205,53 @@
           <div class="block reveal"><strong>Paiement sécurisé</strong><div class="muted">Stripe • PayPal</div></div>
         </div>
       </div>
-      <div class="hero-card reveal">
-        <img alt="Look streetwear & chic" src="https://images.unsplash.com/photo-1520975858867-3253d77643af?q=80&w=1200&auto=format&fit=crop" />
-      </div>
+
+      <!-- ===== NEW MODERN SHOWCASE ===== -->
+      <aside class="showcase reveal" aria-label="Veste Polaire — galerie d'aperçu">
+        <div class="blob" aria-hidden="true"></div>
+        <div class="chips">
+          <span class="chip">Nouvelle collection</span>
+          <span class="chip">Chaud & confortable</span>
+          <span class="chip">Unisexe</span>
+        </div>
+        <!-- images rotatives -->
+        <img class="showcase-img active" src="assets/veste-polaire-5.png" alt="Veste polaire — vue 1">
+        <img class="showcase-img" src="assets/veste-polaire-1.png" alt="Veste polaire — vue 2">
+        <img class="showcase-img" src="assets/veste-polaire-2.png" alt="Veste polaire — vue 3">
+        <img class="showcase-img" src="assets/veste-polaire-3.png" alt="Veste polaire — vue 4">
+        <img class="showcase-img" src="assets/veste-polaire-4.png" alt="Veste polaire — vue 5">
+
+        <div class="dots" id="showcaseDots" aria-label="Navigation des visuels">
+          <button class="dot active" data-i="0" aria-label="Visuel 1"></button>
+          <button class="dot" data-i="1" aria-label="Visuel 2"></button>
+          <button class="dot" data-i="2" aria-label="Visuel 3"></button>
+          <button class="dot" data-i="3" aria-label="Visuel 4"></button>
+          <button class="dot" data-i="4" aria-label="Visuel 5"></button>
+        </div>
+      </aside>
+      <!-- ================================ -->
     </div>
   </main>
 
-  <!-- ====== Boutique (1 produit) ====== -->
   <section id="shop">
     <div class="container">
       <h2 class="section-title">Boutique</h2>
-      <p class="section-sub">Sélection de départ — on ajoutera d’autres articles ensuite.</p>
+      <p class="section-sub">Notre pièce phare pour démarrer.</p>
       <div class="grid" id="productGrid"></div>
     </div>
   </section>
 
-  <!-- ====== FICHE PRODUIT intégrée ====== -->
-  <section id="productPage">
-    <div class="container">
-      <button class="btn back-btn" id="backToShop">⬅ Retour à la boutique</button>
-      <div class="product-grid">
-        <div class="pd-gallery">
-          <div class="pd-big"><img id="pdBig" alt="Veste Polaire"></div>
-          <div class="pd-thumbs" id="pdThumbs"></div>
-        </div>
-        <div class="pd-details">
-          <h3 class="pd-title">Veste Polaire</h3>
-          <div class="pd-price">39,99 €</div>
-          <div class="pd-rating"><span class="stars">⭐⭐⭐⭐⭐</span> <b>4.9</b> / 5 — 51 avis vérifiés</div>
-          <p class="pd-desc">
-            Reste au chaud avec cette veste à col montant doublée polaire, parfaite pour l’automne et l’hiver.
-            Design bicolore moderne, poches pratiques, fermeture éclair solide. Confort optimal au quotidien.
-          </p>
-          <div><strong>Tailles</strong></div>
-          <div class="pd-sizes" id="pdSizes"></div>
-          <div class="pd-actions">
-            <button class="btn primary" id="pdAdd">Ajouter au panier</button>
-            <button class="btn" id="pdBuy">Acheter maintenant</button>
-          </div>
-
-          <div class="reviews">
-            <h4 style="margin:0 0 8px 0">Avis clients</h4>
-            <div id="reviews"></div>
-            <div class="show"><button id="showMore">Voir plus d’avis</button></div>
-            <div class="add-review">
-              <h4 style="margin:0 0 8px 0">Laisser un avis</h4>
-              <input id="revName" placeholder="Votre prénom">
-              <select id="revRating">
-                <option value="5">⭐️⭐️⭐️⭐️⭐️ — Excellent</option>
-                <option value="4">⭐️⭐️⭐️⭐️ — Bon</option>
-                <option value="3">⭐️⭐️⭐️ — Moyen</option>
-                <option value="2">⭐️⭐️ — Médiocre</option>
-                <option value="1">⭐️ — Mauvais</option>
-              </select>
-              <textarea id="revText" rows="3" placeholder="Votre commentaire..."></textarea>
-              <button id="submitReview" class="btn primary" style="margin-top:6px">Envoyer</button>
-              <p id="thanks" style="display:none;color:#10b981;margin-top:10px;">Merci pour votre avis !</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ====== À propos / Contact / Footer ====== -->
   <section id="about">
     <div class="container">
       <h2 class="section-title">À propos de Fashionhabits</h2>
-      <p class="section-sub">Une marque indépendante née d'une idée simple : des pièces faciles à porter, au croisement du street et du chic. Nous sourçons avec soin, contrôlons la qualité, et expédions rapidement depuis nos stocks.</p>
+      <p class="section-sub">Marque indépendante : des essentiels faciles à porter, au croisement du street et du chic. Qualité contrôlée, expédition rapide depuis nos stocks.</p>
     </div>
   </section>
 
   <section id="contact">
     <div class="container">
       <h2 class="section-title">Contact</h2>
-      <p class="section-sub">Une question sur une taille, un retour, ou une commande ? Écris-nous à <a href="mailto:hello@fashionhabits.fr">hello@fashionhabits.fr</a>.</p>
+      <p class="section-sub">Une question ? Écris-nous : <a href="mailto:hello@fashionhabits.fr">hello@fashionhabits.fr</a>.</p>
     </div>
   </section>
 
@@ -274,56 +276,83 @@
     <footer>
       <div class="summary"><span>Total</span><strong id="cartTotal">0,00 €</strong></div>
       <button class="checkout" id="checkoutBtn">Payer maintenant</button>
-      <div class="note-ck">Paiement sécurisé via Stripe. (À activer côté serveur)</div>
+      <div class="note">Paiement sécurisé via Stripe (à configurer quand tu veux).</div>
       <div class="error" id="error"></div>
       <div class="success" id="success"></div>
     </footer>
   </aside>
 
+  <!-- === LIGHTBOX / GALLERY === -->
+  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
+    <div class="lb-panel">
+      <div class="lb-actions">
+        <button class="lb-close" id="lbClose" aria-label="Fermer">✕</button>
+        <div class="muted">Galerie produit</div>
+        <div>
+          <button id="lbPrev" aria-label="Précédent">◀</button>
+          <button id="lbNext" aria-label="Suivant">▶</button>
+        </div>
+      </div>
+      <div class="lb-main">
+        <img id="lbMain" alt="Aperçu produit">
+      </div>
+      <div class="lb-thumbs" id="lbThumbs"></div>
+    </div>
+  </div>
+
   <script>
-    /* ========= Données ========= */
+    /* =================== PRODUIT UNIQUE =================== */
     const PRODUCTS = [
       {
-        id:"veste-polaire",
-        title:"Veste Polaire",
-        price:39.99, category:"Vêtements", gender:"Unisexe",
-        sizes:["XS","S","M","L","XL"],
-        image:"assets/veste-polaire-5.png", // couverture = 5.png (photos inversées)
-        priceId:"price_xxx_VESTE_POLAIRE",
-        description:"Veste polaire bicolore, col montant, poches pratiques. Chaude et confortable pour l’automne/hiver."
+        id: "veste-polaire",
+        title: "Veste Polaire",
+        price: 39.99,
+        category: "Vêtements",
+        gender: "Unisexe",
+        sizes: ["XS","S","M","L","XL"],
+        image: "assets/veste-polaire-5.png", // principale (comme demandé)
+        priceId: "price_xxx_VESTE_POLAIRE",
+        description: "Veste polaire bicolore à col montant. Doublure chaude, poches pratiques, zip solide. Parfaite mi-saison / hiver."
       }
     ];
+
+    /* Galerie du produit */
     const GALLERY = {
-      "veste-polaire":[
+      "veste-polaire": [
         "assets/veste-polaire-5.png",
-        "assets/veste-polaire-4.png",
-        "assets/veste-polaire-3.png",
+        "assets/veste-polaire-1.png",
         "assets/veste-polaire-2.png",
-        "assets/veste-polaire-1.png"
+        "assets/veste-polaire-3.png",
+        "assets/veste-polaire-4.png"
       ]
     };
 
-    /* ========= Utils ========= */
+    /* Utils */
     const formatPrice = (n) => new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR' }).format(n);
-    const el = (html) => { const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstElementChild; };
+    const el = (html) => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
 
-    /* ========= Boutique (rendu) ========= */
+    /* ====== Rendu boutique ====== */
     const grid = document.getElementById('productGrid');
-    PRODUCTS.forEach(p=>{
-      const sizes = p.sizes.map(s=>`<button class="pill" data-size="${s}">${s}</button>`).join('');
-      const ratingNote = `<div class="note">⭐ 4.9/5 <span class="muted">(51 avis)</span></div>`;
+    PRODUCTS.forEach(p => {
+      const sizes = p.sizes.map(s => `<button class="pill" data-size="${s}">${s}</button>`).join('');
+      const gallery = GALLERY[p.id];
+      const thumbs = gallery.map((src,i)=>`<img src="${src}" data-index="${i}" class="${i===0?'active':''}" alt="miniature ${i+1}">`).join('');
       const card = el(`
         <article class="card reveal" title="${p.description}">
-          <div class="media">
-            <img src="${p.image}" alt="${p.title}" class="main" data-id="${p.id}">
+          <div class="media" data-id="${p.id}">
+            <img src="${gallery[0]}" alt="${p.title}" class="main product-img" data-id="${p.id}">
+            <div class="nav-arrows">
+              <button class="prev" data-id="${p.id}">◀</button>
+              <button class="next" data-id="${p.id}">▶</button>
+            </div>
+            <div class="thumbs" data-id="${p.id}">${thumbs}</div>
           </div>
           <div class="card-body">
-            <h3 style="margin:0;font-size:1.05rem" class="title-link" data-id="${p.id}">${p.title}</h3>
+            <h3 style="margin:0;font-size:1.05rem">${p.title}</h3>
             <div class="meta">
               <span class="muted">${p.category} • ${p.gender}</span>
               <span class="price">${formatPrice(p.price)}</span>
             </div>
-            ${ratingNote}
             <div class="variant" data-id="${p.id}">
               ${sizes}
             </div>
@@ -331,34 +360,71 @@
           </div>
         </article>
       `);
-      // clic image ou titre => fiche produit
-      card.querySelector('.main').addEventListener('click',()=>openProductSheet());
-      card.querySelector('.title-link').addEventListener('click',()=>openProductSheet());
       grid.appendChild(card);
     });
 
-    /* ========= Sélection de taille (grille) ========= */
-    document.addEventListener('click',(e)=>{
-      const btn=e.target.closest('.pill'); if(!btn) return;
-      const wrap=btn.closest('.variant'); wrap.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
+    /* Thumbs + flèches dans la carte */
+    document.addEventListener('click', (e) => {
+      const thumb = e.target.closest('.thumbs img');
+      if (thumb) {
+        const wrap = thumb.closest('.media');
+        const id = wrap.dataset.id;
+        const index = Number(thumb.dataset.index);
+        const main = wrap.querySelector('.main');
+        const gal = GALLERY[id];
+        main.src = gal[index];
+        wrap.querySelectorAll('.thumbs img').forEach(img => img.classList.remove('active'));
+        thumb.classList.add('active');
+      }
+      if (e.target.classList.contains('prev') || e.target.classList.contains('next')) {
+        const wrap = e.target.closest('.media');
+        const id = wrap.dataset.id;
+        const gal = GALLERY[id];
+        const main = wrap.querySelector('.main');
+        const currentIndex = gal.findIndex(src => main.src.includes(src));
+        const dir = e.target.classList.contains('prev') ? -1 : 1;
+        const nextIndex = (currentIndex + dir + gal.length) % gal.length;
+        main.src = gal[nextIndex];
+        const thumbs = wrap.querySelectorAll('.thumbs img');
+        thumbs.forEach((t,i)=> t.classList.toggle('active', i===nextIndex));
+      }
+    });
+
+    /* Sélection de taille */
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.pill');
+      if(!btn) return;
+      const wrapper = btn.closest('.variant');
+      wrapper.querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
       btn.classList.add('active');
     });
 
-    /* ========= Panier ========= */
-    const CART_KEY='fh_cart_v1';
-    const loadCart=()=>JSON.parse(localStorage.getItem(CART_KEY)||'[]');
-    const saveCart=(c)=>localStorage.setItem(CART_KEY,JSON.stringify(c));
-    const cartCount=document.getElementById('cartCount'), cartItems=document.getElementById('cartItems'), cartTotal=document.getElementById('cartTotal'); const drawer=document.getElementById('drawer');
-    const updateBadge=()=>{ cartCount.textContent = loadCart().reduce((a,i)=>a+i.qty,0); };
+    /* Panier */
+    const CART_KEY = 'fh_cart_v1';
+    const loadCart = () => JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+    const saveCart = (c) => localStorage.setItem(CART_KEY, JSON.stringify(c));
+    const cartCount = document.getElementById('cartCount');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    const drawer = document.getElementById('drawer');
 
-    const renderCart=()=>{
-      const cart=loadCart(); cartItems.innerHTML=''; let total=0;
-      cart.forEach(item=>{
-        const p=PRODUCTS.find(x=>x.id===item.id); if(!p) return;
-        total+=p.price*item.qty;
-        cartItems.appendChild(el(`
+    const updateBadge = () => {
+      const cart = loadCart();
+      cartCount.textContent = cart.reduce((a,i) => a + i.qty, 0);
+    };
+
+    const renderCart = () => {
+      const cart = loadCart();
+      cartItems.innerHTML = '';
+      let total = 0;
+      cart.forEach(item => {
+        const p = PRODUCTS.find(x => x.id === item.id);
+        if(!p) return;
+        const line = p.price * item.qty;
+        total += line;
+        const node = el(`
           <div class="item">
-            <img src="${p.image}" alt="${p.title}">
+            <img src="${GALLERY[p.id][0]}" alt="${p.title}">
             <div>
               <div><strong>${p.title}</strong></div>
               <div class="muted">Taille ${item.size}</div>
@@ -370,206 +436,161 @@
               <button data-action="inc" data-id="${item.id}" data-size="${item.size}">+</button>
             </div>
           </div>
-        `));
+        `);
+        cartItems.appendChild(node);
       });
-      cartTotal.textContent = formatPrice(total); updateBadge();
+      cartTotal.textContent = formatPrice(total);
+      updateBadge();
     };
 
-    document.addEventListener('click',(e)=>{
-      const add=e.target.closest('.add-btn'); if(!add) return;
-      const id=add.dataset.id; const v=document.querySelector(`.variant[data-id="${id}"]`); const a=v.querySelector('.pill.active');
-      if(!a){ alert('Choisis une taille avant d’ajouter au panier.'); return; }
-      const size=a.dataset.size; const cart=loadCart(); const ex=cart.find(i=>i.id===id&&i.size===size);
-      if(ex) ex.qty++; else cart.push({id,size,qty:1}); saveCart(cart); renderCart(); openDrawer();
+    document.addEventListener('click', (e) => {
+      const add = e.target.closest('.add-btn');
+      if(!add) return;
+      const id = add.dataset.id;
+      const variant = document.querySelector(`.variant[data-id="${id}"]`);
+      const active = variant.querySelector('.pill.active');
+      if(!active) { alert('Choisis une taille avant d’ajouter au panier.'); return; }
+      const size = active.dataset.size;
+      const cart = loadCart();
+      const existing = cart.find(i => i.id === id && i.size === size);
+      if(existing) existing.qty += 1;
+      else cart.push({ id, size, qty: 1 });
+      saveCart(cart);
+      renderCart();
+      openDrawer();
     });
 
-    cartItems.addEventListener('click',(e)=>{
-      if(e.target.tagName!=='BUTTON') return;
-      const id=e.target.dataset.id, size=e.target.dataset.size, act=e.target.dataset.action;
-      const cart=loadCart(); const i=cart.findIndex(x=>x.id===id&&x.size===size); if(i===-1) return;
-      if(act==='inc') cart[i].qty++; if(act==='dec'){ cart[i].qty--; if(cart[i].qty<=0) cart.splice(i,1); }
-      saveCart(cart); renderCart();
+    cartItems.addEventListener('click', (e) => {
+      if(e.target.tagName !== 'BUTTON') return;
+      const id = e.target.dataset.id;
+      const size = e.target.dataset.size;
+      const action = e.target.dataset.action;
+      const cart = loadCart();
+      const idx = cart.findIndex(i => i.id === id && i.size === size);
+      if(idx === -1) return;
+      if(action === 'inc') cart[idx].qty += 1;
+      if(action === 'dec') { cart[idx].qty -= 1; if(cart[idx].qty <= 0) cart.splice(idx,1); }
+      saveCart(cart);
+      renderCart();
     });
 
-    const openCart=document.getElementById('openCart'); const closeCart=document.getElementById('closeCart');
-    const openDrawer=()=>drawer.classList.add('open'); const closeDrawer=()=>drawer.classList.remove('open');
-    openCart.addEventListener('click',()=>{ renderCart(); openDrawer(); }); closeCart.addEventListener('click',closeDrawer);
+    const openCart = document.getElementById('openCart');
+    const closeCart = document.getElementById('closeCart');
+    const openDrawer = () => drawer.classList.add('open');
+    const closeDrawer = () => drawer.classList.remove('open');
+    openCart.addEventListener('click', () => { renderCart(); openDrawer(); });
+    closeCart.addEventListener('click', closeDrawer);
     updateBadge();
 
-    document.getElementById('checkoutBtn').addEventListener('click',()=>{
-      const c=loadCart(); if(!c.length){ document.getElementById('error').textContent='Ton panier est vide.'; return; }
-      document.getElementById('error').textContent='Paiement non configuré (Stripe côté serveur à activer).';
+    /* Checkout (placeholder) */
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const errorEl = document.getElementById('error');
+    const successEl = document.getElementById('success');
+    checkoutBtn.addEventListener('click', () => {
+      errorEl.textContent = "Stripe n'est pas encore activé sur ce projet.";
+      successEl.textContent = "";
     });
 
-    /* ========= Fondu boutique <-> fiche ========= */
-    const shop=document.getElementById('shop'); const productPage=document.getElementById('productPage'); const backToShop=document.getElementById('backToShop');
+    /* Lightbox */
+    const lightbox = document.getElementById('lightbox');
+    const lbMain = document.getElementById('lbMain');
+    const lbThumbs = document.getElementById('lbThumbs');
+    const lbClose = document.getElementById('lbClose');
+    const lbPrev = document.getElementById('lbPrev');
+    const lbNext = document.getElementById('lbNext');
 
-    function fadeOut(el, after){ el.classList.remove('fadeIn'); el.classList.add('fadeOut'); setTimeout(()=>{ el.style.display='none'; el.classList.remove('fadeOut'); if(after) after(); }, 350); }
-    function fadeIn(el){ el.style.display='block'; requestAnimationFrame(()=>{ el.classList.add('show'); el.classList.add('fadeIn'); if(el.id==='productPage') productPage.classList.add('show'); }); }
+    let lbImages = [];
+    let lbIndex = 0;
 
-    function openProductSheet(){
-      // boutique -> fondu out, puis fiche -> fondu in
-      shop.classList.remove('fadeIn'); shop.classList.add('fadeOut');
-      setTimeout(()=>{
-        shop.style.display='none'; shop.classList.remove('fadeOut');
-        productPage.classList.add('show'); // active opacity
-      }, 350);
+    function openLightbox(images, startIndex=0){
+      lbImages = images;
+      lbIndex = startIndex;
+      renderLightbox();
+      lightbox.classList.add('open');
     }
+    function closeLightbox(){ lightbox.classList.remove('open'); }
+    function renderLightbox(){
+      if(!lbImages.length) return;
+      lbMain.src = lbImages[lbIndex];
+      lbThumbs.innerHTML = '';
+      lbImages.forEach((src, i) => {
+        const img = new Image();
+        img.src = src; img.alt = "Miniature";
+        if(i === lbIndex) img.classList.add('active');
+        img.addEventListener('click', () => { lbIndex = i; renderLightbox(); });
+        lbThumbs.appendChild(img);
+      });
+    }
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', (e) => {
+      if(!lightbox.classList.contains('open')) return;
+      if(e.key === 'Escape') closeLightbox();
+      if(e.key === 'ArrowLeft') { lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; renderLightbox(); }
+      if(e.key === 'ArrowRight'){ lbIndex = (lbIndex + 1) % lbImages.length; renderLightbox(); }
+    });
+    lbPrev.addEventListener('click', ()=>{ lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; renderLightbox(); });
+    lbNext.addEventListener('click', ()=>{ lbIndex = (lbIndex + 1) % lbImages.length; renderLightbox(); });
 
-    backToShop.addEventListener('click',()=>{
-      productPage.classList.remove('show');
-      setTimeout(()=>{
-        productPage.style.display='none';
-        shop.style.display='block';
-        requestAnimationFrame(()=>{ shop.classList.add('fadeIn'); });
-      }, 350);
-      window.location.hash='#shop';
+    // Ouvrir lightbox depuis l’image principale d’une carte
+    document.addEventListener('click', (e) => {
+      const img = e.target.closest('.product-img');
+      if(!img) return;
+      const id = img.dataset.id;
+      const gallery = GALLERY[id] || [img.src];
+      openLightbox(gallery, 0);
     });
 
-    /* ========= Fiche produit : galerie / tailles / avis ========= */
-    const PD_IMAGES=GALLERY["veste-polaire"]; const pdBig=document.getElementById('pdBig'); const pdThumbs=document.getElementById('pdThumbs'); const pdSizes=document.getElementById('pdSizes');
-    // initialise quand on ouvre depuis la carte
-    function initProductPage(){
-      // Galerie
-      pdBig.src=PD_IMAGES[0]; pdThumbs.innerHTML='';
-      PD_IMAGES.forEach((src,i)=>{ const img=new Image(); img.src=src; if(i===0) img.classList.add('active');
-        img.onclick=()=>{ pdBig.src=src; document.querySelectorAll('.pd-thumbs img').forEach(t=>t.classList.remove('active')); img.classList.add('active'); };
-        pdThumbs.appendChild(img);
-      });
-      // Tailles
-      pdSizes.innerHTML=''; ["XS","S","M","L","XL"].forEach(s=>{ const b=document.createElement('button'); b.className='pd-pill'; b.textContent=s;
-        b.onclick=()=>{ document.querySelectorAll('.pd-pill').forEach(x=>x.classList.remove('active')); b.classList.add('active'); };
-        pdSizes.appendChild(b);
-      });
-      // Avis (reset visibilité)
-      visible=8; renderReviews();
+    /* Reveal on scroll */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => e.isIntersecting && e.target.classList.add('show'));
+    }, { threshold: .16 });
+    document.querySelectorAll('.reveal').forEach(n => io.observe(n));
+
+    /* Year */
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ====== HERO SHOWCASE JS (auto-fade + dots) ====== */
+    const showcaseImgs = Array.from(document.querySelectorAll('.showcase-img'));
+    const dots = Array.from(document.querySelectorAll('.dot'));
+    let sIndex = 0, sTimer = null, sPaused = false;
+
+    function setShowcase(i){
+      sIndex = i;
+      showcaseImgs.forEach((img, idx) => img.classList.toggle('active', idx===i));
+      dots.forEach((d, idx) => d.classList.toggle('active', idx===i));
     }
-    // Ouvre et initialise
-    function openProductSheet(){ // (écrase la précédente pour inclure init)
-      shop.classList.remove('fadeIn'); shop.classList.add('fadeOut');
-      setTimeout(()=>{
-        shop.style.display='none'; shop.classList.remove('fadeOut');
-        initProductPage();
-        productPage.classList.add('show'); productPage.style.display='block';
-      },350);
-    }
+    function nextShowcase(){ setShowcase((sIndex+1) % showcaseImgs.length); }
+    function startAuto(){ stopAuto(); sTimer = setInterval(nextShowcase, 4200); }
+    function stopAuto(){ if(sTimer){ clearInterval(sTimer); sTimer=null; } }
 
-    function pdSelectedSize(){ const a=document.querySelector('.pd-pill.active'); return a?a.textContent:null; }
-    document.getElementById('pdAdd').onclick=()=>{ const s=pdSelectedSize(); if(!s) return alert('Choisis une taille.');
-      const cart=loadCart(); const id='veste-polaire'; const ex=cart.find(i=>i.id===id&&i.size===s); if(ex) ex.qty++; else cart.push({id,size:s,qty:1}); saveCart(cart); renderCart(); openDrawer(); };
-    document.getElementById('pdBuy').onclick=()=>{ document.getElementById('pdAdd').click(); };
+    dots.forEach(d => d.addEventListener('click', () => { setShowcase(Number(d.dataset.i)); startAuto(); }));
+    document.querySelector('.showcase')?.addEventListener('mouseenter', ()=>{ sPaused=true; stopAuto(); });
+    document.querySelector('.showcase')?.addEventListener('mouseleave', ()=>{ sPaused=false; startAuto(); });
 
-    /* ========= Avis (51) + ajout client (localStorage) ========= */
-    const REV_KEY='fh_reviews_vestePolaire';
-    const BASE_REVIEWS=[
-      {n:"Léo M.",r:5,t:"Très chaude et confortable. Je la mets tous les jours pour aller en cours, rien à dire.",d:"12/10/2025"},
-      {n:"Manon R.",r:5,t:"Reçue en 48h, taille S parfaite (1m64). La matière est super douce.",d:"11/10/2025"},
-      {n:"Lucas V.",r:5,t:"Surpris par la qualité vu le prix. Col montant pratique.",d:"10/10/2025"},
-      {n:"Emma P.",r:4,t:"Jolie coupe. Un peu ample mais c’est le style. Très agréable.",d:"09/10/2025"},
-      {n:"Sofia T.",r:5,t:"Couleurs fidèles aux photos. Je recommande !",d:"08/10/2025"},
-      {n:"Hugo B.",r:5,t:"Zip solide et poches utiles. Parfait pour l’automne 🍁",d:"07/10/2025"},
-      {n:"Camille L.",r:5,t:"Agréable à porter, ne gratte pas. Prise en M, tombe bien.",d:"06/10/2025"},
-      {n:"Noah S.",r:5,t:"Excellent rapport qualité/prix. Chaude mais pas lourde.",d:"05/10/2025"},
-      {n:"Clara D.",r:5,t:"Hyper cosy, je valide !",d:"04/10/2025"},
-      {n:"Jules A.",r:4,t:"Bonne veste, un peu large sur moi (1m75) mais ok.",d:"03/10/2025"},
-      {n:"Mia F.",r:5,t:"Livraison rapide, conforme à la description.",d:"02/10/2025"},
-      {n:"Tom L.",r:5,t:"Taille L nickel (1m83). RAS.",d:"01/10/2025"},
-      {n:"Zoé K.",r:5,t:"Très douce. Je la porte tous les soirs.",d:"30/09/2025"},
-      {n:"Ethan C.",r:4,t:"Je m’attendais à un tissu un peu plus épais, mais ok.",d:"29/09/2025"},
-      {n:"Lina H.",r:5,t:"Top qualité, rien à redire.",d:"28/09/2025"},
-      {n:"Nina E.",r:5,t:"Belle couleur, agréable au toucher.",d:"27/09/2025"},
-      {n:"Rayan Z.",r:5,t:"Très pratique au quotidien, belle coupe.",d:"26/09/2025"},
-      {n:"Léa J.",r:5,t:"S parfait (1m62). Ne bouge pas au lavage.",d:"25/09/2025"},
-      {n:"Adam O.",r:5,t:"Super achat, je recommande à fond.",d:"24/09/2025"},
-      {n:"Chloé N.",r:4,t:"Bien, mais j’aimerais plus de couleurs.",d:"23/09/2025"},
-      {n:"Nolan R.",r:5,t:"Confort ++, look moderne.",d:"22/09/2025"},
-      {n:"Inès U.",r:5,t:"Parfaite pour la mi-saison.",d:"21/09/2025"},
-      {n:"Eliott T.",r:5,t:"Coupe propre. Très content.",d:"20/09/2025"},
-      {n:"Anaïs Q.",r:5,t:"Je l’adore, col montant bien ajusté.",d:"19/09/2025"},
-      {n:"Tim T.",r:4,t:"Bonne qualité. XS un peu large pour moi.",d:"18/09/2025"},
-      {n:"Sarah I.",r:5,t:"Look minimaliste comme j’aime.",d:"17/09/2025"},
-      {n:"Yanis V.",r:5,t:"Chaud et léger à la fois, top.",d:"16/09/2025"},
-      {n:"Maëlys W.",r:5,t:"Taille M ok, envoi rapide.",d:"15/09/2025"},
-      {n:"Ibrahim B.",r:5,t:"Rien à dire, super veste.",d:"14/09/2025"},
-      {n:"Alicia G.",r:5,t:"Conforme aux images, très douce.",d:"13/09/2025"},
-      {n:"Mehdi P.",r:4,t:"J’aurais aimé un zip métal, sinon top.",d:"12/09/2025"},
-      {n:"Eva D.",r:5,t:"On a envie de la garder toute la journée 😄",d:"11/09/2025"},
-      {n:"Noémie L.",r:5,t:"Bonne qualité, rien ne dépasse.",d:"10/09/2025"},
-      {n:"Sami A.",r:5,t:"Portée tous les jours, tient bien.",d:"09/09/2025"},
-      {n:"Julie Y.",r:5,t:"Je recommande à 100%.",d:"08/09/2025"},
-      {n:"Mathis C.",r:5,t:"Très confortable. Livré vite.",d:"07/09/2025"},
-      {n:"Nora E.",r:5,t:"Stylée et simple, efficace.",d:"06/09/2025"},
-      {n:"Kylian R.",r:5,t:"Top pour les soirées fraîches.",d:"05/09/2025"},
-      {n:"Ava M.",r:5,t:"Ne peluche pas pour le moment.",d:"04/09/2025"},
-      {n:"Lenny S.",r:5,t:"Très bien, je valide.",d:"03/09/2025"},
-      {n:"Salomé N.",r:5,t:"Coupe nickel, rien à signaler.",d:"02/09/2025"},
-      {n:"Gabriel K.",r:5,t:"Finitions propres.",d:"01/09/2025"},
-      {n:"Loris X.",r:5,t:"Un poil ample, c’est le style.",d:"31/08/2025"},
-      {n:"Elisa H.",r:5,t:"Je vais en recommander une.",d:"30/08/2025"},
-      {n:"Roxane F.",r:5,t:"Agréable en intérieur/extérieur.",d:"29/08/2025"},
-      {n:"Younes Z.",r:5,t:"Qualité premium pour le prix.",d:"28/08/2025"},
-      {n:"Nahia V.",r:5,t:"Parfaite pour la rentrée.",d:"27/08/2025"},
-      {n:"Ilyes D.",r:5,t:"Conforme à la description.",d:"26/08/2025"},
-      {n:"Amandine J.",r:5,t:"Taille S ok, envoi rapide.",d:"25/08/2025"},
-      {n:"Quentin U.",r:5,t:"Je la porte tous les jours, nickel.",d:"24/08/2025"}
-    ]; // 51 avis
-
-    function getLocalReviews(){ return JSON.parse(localStorage.getItem(REV_KEY)||'[]'); }
-    function saveLocalReviews(a){ localStorage.setItem(REV_KEY, JSON.stringify(a)); }
-
-    const reviewsEl=document.getElementById('reviews'); let visible=8;
-    function renderReviews(){
-      const all=[...getLocalReviews(),...BASE_REVIEWS];
-      reviewsEl.innerHTML='';
-      all.slice(0,visible).forEach(r=>{
-        const d=document.createElement('div'); d.className='review';
-        d.innerHTML=`
-          <div class="head">
-            <strong>${r.n}</strong>
-            <div class="stars" title="${r.r}/5">${'⭐'.repeat(Math.round(r.r))}<span class="muted"> ${r.r}/5</span></div>
-          </div>
-          <div class="txt">${r.t}</div>
-          <small>${r.d} — Achat vérifié</small>
-        `;
-        reviewsEl.appendChild(d);
-      });
-      document.getElementById('showMore').style.display = visible>=all.length ? 'none' : 'inline-block';
-    }
-    document.getElementById('showMore').onclick=()=>{ visible+=8; renderReviews(); };
-    document.getElementById('submitReview').onclick=()=>{
-      const name=(document.getElementById('revName').value||'Client').trim();
-      const text=(document.getElementById('revText').value||'').trim();
-      const rating=Number(document.getElementById('revRating').value)||5;
-      if(!text) return alert("Merci d'écrire un commentaire.");
-      const arr=getLocalReviews(); arr.unshift({n:name,r:rating,t:text,d:new Date().toLocaleDateString('fr-FR')});
-      saveLocalReviews(arr); document.getElementById('revText').value=''; document.getElementById('thanks').style.display='block'; renderReviews();
-    };
-
-    /* ========= Reveal + Year ========= */
-    const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.16});
-    document.querySelectorAll('.reveal').forEach(n=>io.observe(n));
-    document.getElementById('year').textContent=new Date().getFullYear();
+    // init
+    setShowcase(0);
+    startAuto();
   </script>
 
-  <!-- ==== PAGES LÉGALES ==== -->
+  <!-- ==== Pages légales ==== -->
   <section id="legal-mentions">
     <div class="container">
       <h2 class="section-title">Mentions légales</h2>
-      <p class="section-sub">Éditeur : Fashionhabits — Email : hello@fashionhabits.fr — Siège : À compléter. Numéro SIREN/SIRET : À compléter.</p>
+      <p class="section-sub">Éditeur : Fashionhabits — Email : hello@fashionhabits.fr — Siège : À compléter. SIREN/SIRET : À compléter.</p>
     </div>
   </section>
   <section id="legal-privacy">
     <div class="container">
       <h2 class="section-title">Politique de confidentialité</h2>
-      <p class="section-sub">Nous collectons uniquement les données nécessaires au traitement des commandes (nom, adresse, email). Vos données ne sont jamais revendues. Vous pouvez demander leur suppression à tout moment.</p>
+      <p class="section-sub">Nous collectons les données strictement nécessaires au traitement des commandes. Aucune revente de données. Droit de suppression sur demande.</p>
     </div>
   </section>
   <section id="legal-returns">
     <div class="container">
       <h2 class="section-title">Retours & Remboursements</h2>
-      <p class="section-sub">Vous disposez de 14 jours après réception pour retourner un article non porté avec étiquettes. Remboursement sous 7 jours après réception et contrôle.</p>
+      <p class="section-sub">14 jours après réception pour retourner un article non porté avec étiquettes. Remboursement sous 7 jours après contrôle.</p>
     </div>
   </section>
 </body>
 </html>
-
