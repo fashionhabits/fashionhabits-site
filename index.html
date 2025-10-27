@@ -488,8 +488,23 @@
     });
     updateBadge();
 
-    /* Checkout (placeholder) */
-    qs('#checkoutBtn').addEventListener('click', ()=>{ qs('#error').textContent="Stripe n'est pas encore activé."; qs('#success').textContent=""; });
+    const checkoutBtn = document.getElementById('checkoutBtn');
+const errorEl = document.getElementById('error');
+
+// Ton lien Stripe Payment Link
+const PAYMENT_LINK = "https://buy.stripe.com/test_7sD12345abcXYZ"; // <--- remplace ici
+
+checkoutBtn.addEventListener('click', () => {
+  const cart = loadCart();
+  if (cart.length === 0) {
+    errorEl.textContent = 'Ton panier est vide.';
+    return;
+  }
+
+  // Redirection directe vers Stripe
+  window.location.href = PAYMENT_LINK;
+});
+
 
     /* ===== Lightbox ===== */
     const lightbox=qs('#lightbox'), lbMain=qs('#lbMain'), lbThumbs=qs('#lbThumbs'), lbClose=qs('#lbClose');
